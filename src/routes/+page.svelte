@@ -3,13 +3,13 @@
 	import PatternRect from '$lib/components/1_PatternRect.svelte';	
 	import PatternrectStruct from '$lib/components/2_PatternrectStruct.svelte';	
 	import PatternPolygon from '$lib/components/4_PatternPolygon.svelte';
-	import MusterEins from '$lib/components/3_MusterEins.svelte';
-	import MusterZwei from '$lib/components/5_ MusterZwei.svelte';
+	// import MusterEins from '$lib/components/3_MusterEins.svelte';
+	// import MusterZwei from '$lib/components/5_ MusterZwei.svelte';
 	import PatternCubes from '$lib/components/6_PatternCubes.svelte';
-	import TrapezClass from '$lib/components/Trapez.svelte';
+		import TrapezClass from '$lib/components/Trapez.svelte';
 	import PatternTrapez from '$lib/components/Pattern-Trapez.svelte';
-	import Row from '$lib/components/Row.svelte';
-	import Segment from '$lib/components/Segment.svelte';
+	// import Row from '$lib/components/Row.svelte';
+	// import Segment from '$lib/components/Segment.svelte';
 
 	// Load pattern from localStorage or default to 'MusterEins'
 	let selectedPattern = $state(
@@ -21,14 +21,14 @@
 	const patterns = [
 		{ id: 'PatternRect', name: 'Pattern Rect' },
 		{ id: 'PatternrectStruct', name: 'Pattern Rect Struct (Parquet)' },
-		{ id: 'MusterEins', name: 'Muster Eins (Rhombus)' },
+		// { id: 'MusterEins', name: 'Muster Eins (Rhombus)' },
 		{ id: 'PatternPolygon', name: 'Pattern Kacheln' },
 		{ id: 'PatternCubes', name: 'Pattern Cubes' },
-		{id: 'MusterZwei', name: 'Muster Zwei'},
-		{ id: 'Trapez', name: 'Trapez' },
+		// {id: 'MusterZwei', name: 'Muster Zwei'},
+		// { id: 'Trapez', name: 'Trapez' },
 		{ id: 'PatternTrapez', name: 'Pattern Trapez' },
-		{ id: 'Row', name: 'Row' },
-		{ id: 'Segment', name: 'Segment' },
+		// { id: 'Row', name: 'Row' },
+		// { id: 'Segment', name: 'Segment' },
 	];
 
 	$effect(() => {
@@ -57,22 +57,22 @@
 			<PatternRect />
 		{:else if selectedPattern === 'PatternrectStruct'}
 			<PatternrectStruct />
-		{:else if selectedPattern === 'MusterEins'}
-			<MusterEins />
+		<!-- {:else if selectedPattern === 'MusterEins'}
+			<MusterEins /> -->
 		{:else if selectedPattern === 'PatternPolygon'}
 			<PatternPolygon />
 		{:else if selectedPattern === 'PatternCubes'}
 			<PatternCubes />
-		{:else if selectedPattern === 'MusterZwei'}
-			<MusterZwei />
-		{:else if selectedPattern === 'Trapez'}
-			<Trapez />
+		<!-- {:else if selectedPattern === 'MusterZwei'}
+			<MusterZwei /> -->
+		<!-- {:else if selectedPattern === 'Trapez'}
+			<Trapez /> -->
 		{:else if selectedPattern === 'PatternTrapez'}
 			<PatternTrapez />
-		{:else if selectedPattern === 'Row'}
+		<!-- {:else if selectedPattern === 'Row'}
 			<Row />
 		{:else if selectedPattern === 'Segment'}
-			<Segment />
+			<Segment /> -->
 		{/if}
 	</main>
 </div>
