@@ -2,19 +2,36 @@
   import { Segment } from './Segment.svelte';
 
   export class Pattern {
-    constructor(startY = 100) {
+    constructor(startY = 100, options = {}) {
       this.startY = startY;
       this.h = Math.sin(Math.PI / 3) * 50;
-      this.segmentWidth = 450;    // Horizontaler Offset zwischen Segmenten
-      this.segmentHeight = 8 * this.h;  // Vertikaler Offset zwischen Segmenten
+      
+      // Konfigurierbare Parameter mit Defaults
+      this.segmentWidth = options.segmentWidth || 450;
+      this.segmentHeight = options.segmentHeight || (8 * this.h);
+      this.segmentOffsetX = options.segmentOffsetX || 0;
+      this.segmentOffsetY = options.segmentOffsetY || 0;
+      this.trapezColor = options.trapezColor || 'white';
+      this.dreieckColor = options.dreieckColor || 'red';
+      this.parallelogrammColor = options.parallelogrammColor || 'blue';
+      
+      // Row-Konfiguration
+      this.rowOffsetX = options.rowOffsetX || 0;
+      this.rowSpacing = options.rowSpacing !== undefined ? options.rowSpacing : 50;
+      this.baseStartX = options.baseStartX || 100;
+      
       this.segments = [];
     }
 
     // Füge Segment an Grid-Position (row, col) hinzu
     addSegment(row, col) {
-      const offsetX = col * this.segmentWidth;
-      const offsetY = row * this.segmentHeight;
-      const segment = new Segment(this.startY + offsetY, offsetX);
+      const offsetX = col * this.segmentWidth + this.segmentOffsetX;
+      const offsetY = row * this.segmentHeight + this.segmentOffsetY;
+      const segment = new Segment(this.startY + offsetY, offsetX, {
+        rowOffsetX: this.rowOffsetX,
+        rowSpacing: this.rowSpacing,
+        baseStartX: this.baseStartX
+      });
       this.segments.push({ segment, row, col });
       return segment;
     }

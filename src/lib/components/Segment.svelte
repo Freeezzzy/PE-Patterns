@@ -2,26 +2,30 @@
   import { Row } from './Row.svelte';
 
   export class Segment {
-    constructor(startY = 100, offsetX = 0) {
+    constructor(startY = 100, offsetX = 0, options = {}) {
       this.h = Math.sin(Math.PI / 3) * 50;
       this.offsetX = offsetX;
+      this.options = options;
       this.rows = [];
       this.generateRows(startY);
     }
 
     generateRows(startY) {
+      const baseOffsetX = this.options.rowOffsetX || 0;
+      const rowSpacing = this.options.rowSpacing !== undefined ? this.options.rowSpacing : 50;
+      
       // 4 Reihen mit unterschiedlichen Transformationen wie in 5_MusterZwei
       // Row 1: Standard (100-500)
-      this.rows.push(new Row(startY, this.offsetX, false));
+      this.rows.push(new Row(startY, this.offsetX + baseOffsetX, false));
       
       // Row 2: Gespiegelt (500-100)
-      this.rows.push(new Row(startY + 2 * this.h, this.offsetX, true));
+      this.rows.push(new Row(startY + 2 * this.h, this.offsetX + baseOffsetX, true));
       
-      // Row 3: Offset +50, gespiegelt (550-150)
-      this.rows.push(new Row(startY + 4 * this.h, this.offsetX + 50, true));
+      // Row 3: Offset +rowSpacing, gespiegelt (550-150)
+      this.rows.push(new Row(startY + 4 * this.h, this.offsetX + baseOffsetX + rowSpacing, true));
       
-      // Row 4: Offset +50 (150-550)
-      this.rows.push(new Row(startY + 6 * this.h, this.offsetX + 50, false));
+      // Row 4: Offset +rowSpacing (150-550)
+      this.rows.push(new Row(startY + 6 * this.h, this.offsetX + baseOffsetX + rowSpacing, false));
     }
 
     getAllElements() {
