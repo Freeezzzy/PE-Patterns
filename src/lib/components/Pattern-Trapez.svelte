@@ -249,7 +249,7 @@
   <!-- SVG Canvas -->
   <div style="flex: 1; overflow: auto;">
     <svg viewBox="0 0 {viewBoxWidth} {viewBoxHeight}" style="border: 1px solid black; width: 100%; min-height: 100%;">
-      <rect x="0" y="0" width="{viewBoxWidth}" height="{viewBoxHeight}" fill="#000000" stroke="none" />
+      <rect x="0" y="0" width="{viewBoxWidth}" height="{viewBoxHeight}" fill="#2d2d2dff" stroke="none" />
       
       <g transform="scale({scale})">
         {#each allElements as element}
