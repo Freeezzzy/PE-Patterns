@@ -16,16 +16,16 @@
       
       // 4 Reihen mit unterschiedlichen Transformationen wie in 5_MusterZwei
       // Row 1: Standard (100-500)
-      this.rows.push(new Row(startY, this.offsetX + baseOffsetX, false));
+      this.rows.push(new Row(startY, this.offsetX + baseOffsetX, false, this.options));
       
       // Row 2: Gespiegelt (500-100)
-      this.rows.push(new Row(startY + 2 * this.h, this.offsetX + baseOffsetX, true));
+      this.rows.push(new Row(startY + 2 * this.h, this.offsetX + baseOffsetX, true, this.options));
       
       // Row 3: Offset +rowSpacing, gespiegelt (550-150)
-      this.rows.push(new Row(startY + 4 * this.h, this.offsetX + baseOffsetX + rowSpacing, true));
+      this.rows.push(new Row(startY + 4 * this.h, this.offsetX + baseOffsetX + rowSpacing, true, this.options));
       
       // Row 4: Offset +rowSpacing (150-550)
-      this.rows.push(new Row(startY + 6 * this.h, this.offsetX + baseOffsetX + rowSpacing, false));
+      this.rows.push(new Row(startY + 6 * this.h, this.offsetX + baseOffsetX + rowSpacing, false, this.options));
     }
 
     getAllElements() {

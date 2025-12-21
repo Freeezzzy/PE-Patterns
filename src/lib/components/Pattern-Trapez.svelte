@@ -11,9 +11,9 @@
     segmentOffsetX: 0,
     segmentOffsetY: 0,
     scale: 1,
-    trapezColor: '#ffffff',
-    dreieckColor: '#ff0000',
-    parallelogrammColor: '#0000ff',
+    trapezColor: '#f5f5dc',
+    dreieckColor: '#008080',
+    parallelogrammColor: '#191970',
     rowOffsetX: 0,
     rowSpacing: 50,
     baseStartX: 100
@@ -249,7 +249,7 @@
   <!-- SVG Canvas -->
   <div style="flex: 1; overflow: auto;">
     <svg viewBox="0 0 {viewBoxWidth} {viewBoxHeight}" style="border: 1px solid black; width: 100%; min-height: 100%;">
-      <rect x="0" y="0" width="{viewBoxWidth}" height="{viewBoxHeight}" fill="#ffffff" stroke="none" />
+      <rect x="0" y="0" width="{viewBoxWidth}" height="{viewBoxHeight}" fill="#000000" stroke="none" />
       
       <g transform="scale({scale})">
         {#each allElements as element}

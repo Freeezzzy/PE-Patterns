@@ -4,10 +4,11 @@
   import { Parallelogramm } from './Parallelogramm.svelte';
 
   export class Row {
-    constructor(y, offsetX = 0, reverse = false) {
+    constructor(y, offsetX = 0, reverse = false, options = {}) {
       this.y = y;
       this.offsetX = offsetX;
       this.reverse = reverse;
+      this.options = options;
       this.h = Math.sin(Math.PI / 3) * 50;
       this.elements = [];
       this.generateElements();
@@ -44,8 +45,9 @@
       }));
 
       // Füge Trapeze hinzu
+      const trapezColor = this.options.trapezColor || 'beige';
       trapezPositions.forEach(pos => {
-        this.elements.push(new Trapez(pos.x, pos.y, pos.rotation));
+        this.elements.push(new Trapez(pos.x, pos.y, pos.rotation, trapezColor));
       });
 
       // Dreiecke und Parallelogramme (mit Offset)
@@ -69,10 +71,13 @@
       paraX1 += this.offsetX;
       paraX2 += this.offsetX;
 
-      this.elements.push(new Dreieck(dreieckX1, this.y - 43.301, 0));
-      this.elements.push(new Dreieck(dreieckX2, this.y, 0));
-      this.elements.push(new Parallelogramm(paraX1, this.y - 43.301, 0, 'blue', this.reverse));
-      this.elements.push(new Parallelogramm(paraX2, this.y, 0, 'blue', this.reverse));
+      const dreieckColor = this.options.dreieckColor || 'teal';
+      const parallelogrammColor = this.options.parallelogrammColor || 'blue';
+      
+      this.elements.push(new Dreieck(dreieckX1, this.y - 43.301, 0, dreieckColor));
+      this.elements.push(new Dreieck(dreieckX2, this.y, 0, dreieckColor));
+      this.elements.push(new Parallelogramm(paraX1, this.y - 43.301, 0, parallelogrammColor, this.reverse));
+      this.elements.push(new Parallelogramm(paraX2, this.y, 0, parallelogrammColor, this.reverse));
     }
 
     getAllElements() {

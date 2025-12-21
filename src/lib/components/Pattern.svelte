@@ -11,9 +11,9 @@
       this.segmentHeight = options.segmentHeight || (8 * this.h);
       this.segmentOffsetX = options.segmentOffsetX || 0;
       this.segmentOffsetY = options.segmentOffsetY || 0;
-      this.trapezColor = options.trapezColor || 'white';
-      this.dreieckColor = options.dreieckColor || 'red';
-      this.parallelogrammColor = options.parallelogrammColor || 'blue';
+      this.trapezColor = options.trapezColor || 'beige';
+      this.dreieckColor = options.dreieckColor || 'teal';
+      this.parallelogrammColor = options.parallelogrammColor || 'midnightblue';
       
       // Row-Konfiguration
       this.rowOffsetX = options.rowOffsetX || 0;
@@ -30,7 +30,10 @@
       const segment = new Segment(this.startY + offsetY, offsetX, {
         rowOffsetX: this.rowOffsetX,
         rowSpacing: this.rowSpacing,
-        baseStartX: this.baseStartX
+        baseStartX: this.baseStartX,
+        trapezColor: this.trapezColor,
+        dreieckColor: this.dreieckColor,
+        parallelogrammColor: this.parallelogrammColor
       });
       this.segments.push({ segment, row, col });
       return segment;
