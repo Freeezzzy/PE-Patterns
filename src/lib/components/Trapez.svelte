@@ -1,6 +1,6 @@
 <script context="module">
   export class Trapez {
-    constructor(x, y, rotation = 0, fill = 'white') {
+    constructor(x, y, rotation = 0, fill = 'beige') {
       this.x = x;
       this.y = y;
       this.rotation = rotation;

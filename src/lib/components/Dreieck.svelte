@@ -1,6 +1,6 @@
 <script context="module">
   export class Dreieck {
-    constructor(x, y, rotation = 0, fill = 'red') {
+    constructor(x, y, rotation = 0, fill = 'teal') {
       this.x = x;
       this.y = y;
       this.rotation = rotation;
