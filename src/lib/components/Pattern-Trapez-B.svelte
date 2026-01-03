@@ -119,25 +119,25 @@
         <section>
           <h4>Segment-Offset</h4>
           <p class="description">Verschiebe alle Segmente gemeinsam.</p>
-          <Slider min={-100} max={100} bind:value={segmentOffsetX} label="Offset X (px)" />
-          <Slider min={-100} max={100} bind:value={segmentOffsetY} label="Offset Y (px)" />
+          <Slider min={-50} max={50} bind:value={segmentOffsetX} label="Offset X (px)" />
+          <Slider min={-50} max={50} bind:value={segmentOffsetY} label="Offset Y (px)" />
         </section>
 
         <section>
           <h4>Segment-Abstände</h4>
           <p class="description">Ändere die Abstände zwischen den Segmenten.</p>
-          <Slider min={350} max={500} bind:value={segmentWidth} label="Horizontal (px)" />
-          <Slider min={280} max={400} bind:value={segmentHeight} label="Vertikal (px)" />
+          <Slider min={450} max={550} bind:value={segmentWidth} label="Horizontal (px)" />
+          <Slider min={346} max={450} bind:value={segmentHeight} label="Vertikal (px)" />
         </section>
 
         <section>
           <h4>Reihen X-Position</h4>
           <p class="description">Stelle die X-Position jeder Reihe individuell ein.</p>
-          <Slider min={80} max={120} bind:value={baseStartX} label="Basis Start-X (px)" />
-          <Slider min={-50} max={50} bind:value={row1OffsetX} label="Reihe 1 Offset-X (px)" />
-          <Slider min={-50} max={50} bind:value={row2OffsetX} label="Reihe 2 Offset-X (px)" />
-          <Slider min={0} max={100} bind:value={row3OffsetX} label="Reihe 3 Offset-X (px)" />
-          <Slider min={0} max={100} bind:value={row4OffsetX} label="Reihe 4 Offset-X (px)" />
+          <Slider min={100} max={150} bind:value={baseStartX} label="Basis Start-X (px)" />
+          <Slider min={-20} max={20} bind:value={row1OffsetX} label="Reihe 1 Offset-X (px)" />
+          <Slider min={-20} max={20} bind:value={row2OffsetX} label="Reihe 2 Offset-X (px)" />
+          <Slider min={30} max={70} bind:value={row3OffsetX} label="Reihe 3 Offset-X (px)" />
+          <Slider min={30} max={70} bind:value={row4OffsetX} label="Reihe 4 Offset-X (px)" />
         </section>
       </div>
     </div>
