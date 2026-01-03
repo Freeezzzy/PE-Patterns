@@ -106,7 +106,7 @@
   {#if !panelCollapsed}
     <div class="sidebar">
       <div class="sidebar-header">
-        <h3>Pattern A - Vollständige Kontrolle</h3>
+        <h3>Pattern A - Farbänderungen</h3>
         <button class="reset-all-btn" on:click={resetAll}>Reset All</button>
       </div>
 

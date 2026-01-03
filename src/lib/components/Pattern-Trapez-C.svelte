@@ -12,9 +12,9 @@
     segmentOffsetX: 0,
     segmentOffsetY: 0,
     scale: 1,
-    trapezColor: '#9370DB',
-    dreieckColor: '#20B2AA',
-    parallelogrammColor: '#FF8C00',
+    trapezColor: '#e0f2e9',
+    dreieckColor: '#3cb371',
+    parallelogrammColor: '#2f4f2f',
     rowOffsetX: 0,
     rowSpacing: 50,
     baseStartX: 100
