@@ -1,9 +1,5 @@
 <script>
   import { Pattern } from './Pattern.svelte';
-  import Slider from '$lib/ui/Slider.svelte';
-  import RangeSlider from '$lib/ui/RangeSlider.svelte';
-  import Toggle from '$lib/ui/Toggle.svelte';
-  import ColorPickerHSV from '$lib/ui/ColorPicker/ColorPickerHSV.svelte';
   import EditableColorPalette from '$lib/ui/EditableColorPalette.svelte';
 
   // Default-Werte
@@ -24,21 +20,23 @@
     baseStartX: 100
   };
 
-  // Variabel steuerbare Parameter
-  let rows = DEFAULTS.rows;
-  let cols = DEFAULTS.cols;
-  let startY = DEFAULTS.startY;
-  let segmentWidth = DEFAULTS.segmentWidth;
-  let segmentHeight = DEFAULTS.segmentHeight;
-  let segmentOffsetX = DEFAULTS.segmentOffsetX;
-  let segmentOffsetY = DEFAULTS.segmentOffsetY;
-  let scale = DEFAULTS.scale;
+  // Feste Parameter (nicht änderbar)
+  const rows = DEFAULTS.rows;
+  const cols = DEFAULTS.cols;
+  const startY = DEFAULTS.startY;
+  const segmentWidth = DEFAULTS.segmentWidth;
+  const segmentHeight = DEFAULTS.segmentHeight;
+  const segmentOffsetX = DEFAULTS.segmentOffsetX;
+  const segmentOffsetY = DEFAULTS.segmentOffsetY;
+  const scale = DEFAULTS.scale;
+  const rowOffsetX = DEFAULTS.rowOffsetX;
+  const rowSpacing = DEFAULTS.rowSpacing;
+  const baseStartX = DEFAULTS.baseStartX;
+
+  // Nur Farben sind änderbar
   let trapezColor = DEFAULTS.trapezColor;
   let dreieckColor = DEFAULTS.dreieckColor;
   let parallelogrammColor = DEFAULTS.parallelogrammColor;
-  let rowOffsetX = DEFAULTS.rowOffsetX;
-  let rowSpacing = DEFAULTS.rowSpacing;
-  let baseStartX = DEFAULTS.baseStartX;
 
   // UI State
   let panelCollapsed = false;
@@ -51,17 +49,7 @@
   $: parallelogrammColor = colors[2] || DEFAULTS.parallelogrammColor;
 
   function resetAll() {
-    rows = DEFAULTS.rows;
-    cols = DEFAULTS.cols;
-    segmentWidth = DEFAULTS.segmentWidth;
-    segmentHeight = DEFAULTS.segmentHeight;
-    segmentOffsetX = DEFAULTS.segmentOffsetX;
-    segmentOffsetY = DEFAULTS.segmentOffsetY;
-    scale = DEFAULTS.scale;
     colors = [DEFAULTS.trapezColor, DEFAULTS.dreieckColor, DEFAULTS.parallelogrammColor];
-    rowOffsetX = DEFAULTS.rowOffsetX;
-    rowSpacing = DEFAULTS.rowSpacing;
-    baseStartX = DEFAULTS.baseStartX;
   }
   
   // Berechne Pattern basierend auf Parametern
@@ -116,30 +104,8 @@
 
       <div class="sidebar-content">
         <section>
-          <h4>Grid Einstellungen</h4>
-          <p class="description">Ändere alle Parameter des Patterns - Grid, Abstände, Farben und Positionen.</p>
-          <Slider min={1} max={10} bind:value={rows} label="Reihen" />
-          <Slider min={1} max={10} bind:value={cols} label="Spalten" />
-        </section>
-
-        <section>
-          <h4>Abstände</h4>
-          <Slider min={300} max={600} bind:value={segmentWidth} label="Horizontal (px)" />
-          <Slider min={200} max={500} bind:value={segmentHeight} label="Vertikal (px)" />
-          <Slider min={-200} max={200} bind:value={segmentOffsetX} label="Segment Offset-X (px)" />
-          <Slider min={-200} max={200} bind:value={segmentOffsetY} label="Segment Offset-Y (px)" />
-          <Slider min={0.1} max={3} step={0.1} bind:value={scale} label="Skalierung" />
-        </section>
-
-        <section>
-          <h4>Reihen-Konfiguration</h4>
-          <Slider min={50} max={200} bind:value={baseStartX} label="Basis Start-X (px)" />
-          <Slider min={-100} max={100} bind:value={rowOffsetX} label="Row Offset-X (px)" />
-          <Slider min={0} max={100} bind:value={rowSpacing} label="Row 3/4 Spacing (px)" />
-        </section>
-
-        <section>
-          <h4>Farben</h4>
+          <h4>Farbpalette</h4>
+          <p class="description">In diesem Pattern können nur die Farben geändert werden. Die Geometrie ist fest.</p>
           <EditableColorPalette
             bind:colors
             bind:selectedColorIndex

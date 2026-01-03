@@ -1,12 +1,11 @@
 <script>
   import { Pattern } from './Pattern.svelte';
-  import Slider from '$lib/ui/Slider.svelte';
   import Toggle from '$lib/ui/Toggle.svelte';
 
   // Default-Werte (feste Farben und Grid)
   const DEFAULTS = {
     rows: 2,
-    cols: 3,
+    cols: 2,
     startY: 100,
     segmentWidth: 450,
     segmentHeight: 346,
@@ -16,8 +15,8 @@
     trapezColor: '#9370DB',
     dreieckColor: '#20B2AA',
     parallelogrammColor: '#FF8C00',
-    rowOffsetX: 50,
-    rowSpacing: 30,
+    rowOffsetX: 0,
+    rowSpacing: 50,
     baseStartX: 100
   };
 
@@ -34,43 +33,50 @@
   const dreieckColor = DEFAULTS.dreieckColor;
   const parallelogrammColor = DEFAULTS.parallelogrammColor;
 
-  // Nur Position und Spiegelung sind änderbar
-  let rowOffsetX = DEFAULTS.rowOffsetX;
-  let rowSpacing = DEFAULTS.rowSpacing;
-  let baseStartX = DEFAULTS.baseStartX;
-  let mirrorHorizontal = false;
-  let mirrorVertical = false;
+  // Nur Spiegelung ist änderbar
+  const rowOffsetX = DEFAULTS.rowOffsetX;
+  const rowSpacing = DEFAULTS.rowSpacing;
+  const baseStartX = DEFAULTS.baseStartX;
+  let mirrorRow1 = false;
+  let mirrorRow2 = true;  // Default: Row 2 ist gespiegelt
+  let mirrorRow3 = true;  // Default: Row 3 ist gespiegelt
+  let mirrorRow4 = false;
 
   // UI State
   let panelCollapsed = false;
+  
+  let pattern;
 
   function resetAll() {
-    rowOffsetX = DEFAULTS.rowOffsetX;
-    rowSpacing = DEFAULTS.rowSpacing;
-    baseStartX = DEFAULTS.baseStartX;
-    mirrorHorizontal = false;
-    mirrorVertical = false;
+    mirrorRow1 = false;
+    mirrorRow2 = true;
+    mirrorRow3 = true;
+    mirrorRow4 = false;
   }
   
-  // Berechne Pattern basierend auf Parametern
-  $: pattern = new Pattern(startY, {
-    segmentWidth,
-    segmentHeight,
-    segmentOffsetX,
-    segmentOffsetY,
-    trapezColor,
-    dreieckColor,
-    parallelogrammColor,
-    rowOffsetX,
-    rowSpacing,
-    baseStartX
-  });
+  // Berechne Pattern basierend auf Parametern - wird komplett neu generiert wenn Spiegelungen sich ändern
+  $: patternKey = `${mirrorRow1}-${mirrorRow2}-${mirrorRow3}-${mirrorRow4}`;
   
-  $: {
-    pattern.generateGrid(rows, cols);
-  }
-  
-  $: allElements = pattern.getAllElements();
+  $: allElements = (() => {
+    const newPattern = new Pattern(startY, {
+      segmentWidth,
+      segmentHeight,
+      segmentOffsetX,
+      segmentOffsetY,
+      trapezColor,
+      dreieckColor,
+      parallelogrammColor,
+      rowOffsetX,
+      rowSpacing,
+      baseStartX,
+      row1Mirror: mirrorRow1,
+      row2Mirror: mirrorRow2,
+      row3Mirror: mirrorRow3,
+      row4Mirror: mirrorRow4
+    });
+    newPattern.generateGrid(rows, cols);
+    return newPattern.getAllElements();
+  })();
   
   // Berechne viewBox - quadratisch
   const h = Math.sin(Math.PI / 3) * 50;
@@ -90,10 +96,6 @@
   // Zentriere Pattern in der viewBox
   $: centerX = (viewBoxWidth - (patternRealWidth * scale + patternStartX * scale)) / 2;
   $: centerY = (viewBoxHeight - (patternRealHeight * scale + patternStartY * scale)) / 2;
-
-  // Spiegelungs-Transform
-  $: mirrorTransform = `scale(${mirrorHorizontal ? -1 : 1}, ${mirrorVertical ? -1 : 1})`;
-  $: mirrorTranslate = `translate(${mirrorHorizontal ? -viewBoxWidth : 0}, ${mirrorVertical ? -viewBoxHeight : 0})`;
 </script>
 
 <div style="position: relative; width: 100vw; height: 100vh;">
@@ -101,24 +103,18 @@
   {#if !panelCollapsed}
     <div class="sidebar">
       <div class="sidebar-header">
-        <h3>Pattern C - Position & Spiegelung</h3>
+        <h3>Pattern C - Reihen-Spiegelung</h3>
         <button class="reset-all-btn" on:click={resetAll}>Reset</button>
       </div>
 
       <div class="sidebar-content">
         <section>
-          <h4>Spiegelung</h4>
-          <p class="description">Spiegele das Pattern horizontal oder vertikal.</p>
-          <Toggle bind:value={mirrorHorizontal} label="Horizontal spiegeln" />
-          <Toggle bind:value={mirrorVertical} label="Vertikal spiegeln" />
-        </section>
-
-        <section>
-          <h4>Reihen-Position</h4>
-          <p class="description">Verschiebe die Reihen und ändere deren Abstände.</p>
-          <Slider min={50} max={200} bind:value={baseStartX} label="Basis Start-X (px)" />
-          <Slider min={-100} max={100} bind:value={rowOffsetX} label="Row Offset-X (px)" />
-          <Slider min={0} max={100} bind:value={rowSpacing} label="Row 3/4 Spacing (px)" />
+          <h4>Reihen-Spiegelung</h4>
+          <p class="description">Spiegele jede Reihe einzeln. Jedes Segment hat 4 Reihen.</p>
+          <Toggle bind:value={mirrorRow1} label="Reihe 1 spiegeln" />
+          <Toggle bind:value={mirrorRow2} label="Reihe 2 spiegeln" />
+          <Toggle bind:value={mirrorRow3} label="Reihe 3 spiegeln" />
+          <Toggle bind:value={mirrorRow4} label="Reihe 4 spiegeln" />
         </section>
       </div>
     </div>
@@ -133,9 +129,9 @@
     <svg viewBox="0 0 {viewBoxWidth} {viewBoxHeight}" style="border: 1px solid black; width: min(90vw, 90vh); height: min(90vw, 90vh);">
       <rect x="0" y="0" width="{viewBoxWidth}" height="{viewBoxHeight}" fill="#2d2d2dff" stroke="none" />
       
-      <g transform="{mirrorTranslate} {mirrorTransform}">
-        <g transform="translate({centerX}, {centerY}) scale({scale})">
-          {#each allElements as element}
+      <g transform="translate({centerX}, {centerY}) scale({scale})">
+        {#key patternKey}
+          {#each allElements as element, i}
             <polygon
               points={element.getPoints()}
               fill={element.type === 'trapez' ? trapezColor : element.type === 'dreieck' ? dreieckColor : parallelogrammColor}
@@ -144,7 +140,7 @@
               transform={element.getTransform()}
           />
         {/each}
-        </g>
+        {/key}
       </g>
     </svg>
   </div>

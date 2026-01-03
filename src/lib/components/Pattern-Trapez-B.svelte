@@ -1,11 +1,11 @@
 <script>
   import { Pattern } from './Pattern.svelte';
-  import EditableColorPalette from '$lib/ui/EditableColorPalette.svelte';
+  import Slider from '$lib/ui/Slider.svelte';
 
   // Default-Werte (feste Geometrie)
   const DEFAULTS = {
-    rows: 3,
-    cols: 3,
+    rows: 2,
+    cols: 2,
     startY: 100,
     segmentWidth: 450,
     segmentHeight: 346,
@@ -24,53 +24,67 @@
   const rows = DEFAULTS.rows;
   const cols = DEFAULTS.cols;
   const startY = DEFAULTS.startY;
-  const segmentWidth = DEFAULTS.segmentWidth;
-  const segmentHeight = DEFAULTS.segmentHeight;
-  const segmentOffsetX = DEFAULTS.segmentOffsetX;
-  const segmentOffsetY = DEFAULTS.segmentOffsetY;
   const scale = DEFAULTS.scale;
-  const rowOffsetX = DEFAULTS.rowOffsetX;
-  const rowSpacing = DEFAULTS.rowSpacing;
-  const baseStartX = DEFAULTS.baseStartX;
+  const trapezColor = DEFAULTS.trapezColor;
+  const dreieckColor = DEFAULTS.dreieckColor;
+  const parallelogrammColor = DEFAULTS.parallelogrammColor;
 
-  // Nur Farben sind änderbar
-  let trapezColor = DEFAULTS.trapezColor;
-  let dreieckColor = DEFAULTS.dreieckColor;
-  let parallelogrammColor = DEFAULTS.parallelogrammColor;
+  // Nur Positionen und Abstände sind änderbar
+  let segmentWidth = DEFAULTS.segmentWidth;
+  let segmentHeight = DEFAULTS.segmentHeight;
+  let segmentOffsetX = DEFAULTS.segmentOffsetX;
+  let segmentOffsetY = DEFAULTS.segmentOffsetY;
+  let rowOffsetX = DEFAULTS.rowOffsetX;
+  let rowSpacing = DEFAULTS.rowSpacing;
+  let baseStartX = DEFAULTS.baseStartX;
+  
+  // Individuelle Row-Offsets
+  let row1OffsetX = 0;
+  let row2OffsetX = 0;
+  let row3OffsetX = 50;
+  let row4OffsetX = 50;
+  
+  let pattern;
 
   // UI State
   let panelCollapsed = false;
-  let selectedColorIndex = 0;
-  let colors = [trapezColor, dreieckColor, parallelogrammColor];
-
-  // Update colors when palette changes
-  $: trapezColor = colors[0] || DEFAULTS.trapezColor;
-  $: dreieckColor = colors[1] || DEFAULTS.dreieckColor;
-  $: parallelogrammColor = colors[2] || DEFAULTS.parallelogrammColor;
 
   function resetAll() {
-    colors = [DEFAULTS.trapezColor, DEFAULTS.dreieckColor, DEFAULTS.parallelogrammColor];
+    segmentWidth = DEFAULTS.segmentWidth;
+    segmentHeight = DEFAULTS.segmentHeight;
+    segmentOffsetX = DEFAULTS.segmentOffsetX;
+    segmentOffsetY = DEFAULTS.segmentOffsetY;
+    rowOffsetX = DEFAULTS.rowOffsetX;
+    rowSpacing = DEFAULTS.rowSpacing;
+    baseStartX = DEFAULTS.baseStartX;
+    row1OffsetX = 0;
+    row2OffsetX = 0;
+    row3OffsetX = 50;
+    row4OffsetX = 50;
   }
   
-  // Berechne Pattern basierend auf Parametern
-  $: pattern = new Pattern(startY, {
-    segmentWidth,
-    segmentHeight,
-    segmentOffsetX,
-    segmentOffsetY,
-    trapezColor,
-    dreieckColor,
-    parallelogrammColor,
-    rowOffsetX,
-    rowSpacing,
-    baseStartX
-  });
-  
-  $: {
-    pattern.generateGrid(rows, cols);
-  }
-  
-  $: allElements = pattern.getAllElements();
+  // Berechne Pattern basierend auf Parametern - komplett neu erstellen bei Änderungen
+  $: allElements = (() => {
+    const newPattern = new Pattern(startY, {
+      segmentWidth,
+      segmentHeight,
+      segmentOffsetX,
+      segmentOffsetY,
+      trapezColor,
+      dreieckColor,
+      parallelogrammColor,
+      rowOffsetX,
+      rowSpacing,
+      baseStartX,
+      row1OffsetX,
+      row2OffsetX,
+      row3OffsetX,
+      row4OffsetX
+    });
+    newPattern.generateGrid(rows, cols);
+    pattern = newPattern;
+    return newPattern.getAllElements();
+  })();
   
   // Berechne viewBox - quadratisch
   const h = Math.sin(Math.PI / 3) * 50;
@@ -97,21 +111,33 @@
   {#if !panelCollapsed}
     <div class="sidebar">
       <div class="sidebar-header">
-        <h3>Pattern B - Nur Farben</h3>
+        <h3>Pattern B - Positionen & Abstände</h3>
         <button class="reset-all-btn" on:click={resetAll}>Reset</button>
       </div>
 
       <div class="sidebar-content">
         <section>
-          <h4>Farbpalette</h4>
-          <p class="description">In diesem Pattern können nur die Farben geändert werden. Die Geometrie ist fest.</p>
-          <EditableColorPalette
-            bind:colors
-            bind:selectedColorIndex
-            width={310}
-            height={310}
-            swatchSize={30}
-          />
+          <h4>Segment-Offset</h4>
+          <p class="description">Verschiebe alle Segmente gemeinsam.</p>
+          <Slider min={-100} max={100} bind:value={segmentOffsetX} label="Offset X (px)" />
+          <Slider min={-100} max={100} bind:value={segmentOffsetY} label="Offset Y (px)" />
+        </section>
+
+        <section>
+          <h4>Segment-Abstände</h4>
+          <p class="description">Ändere die Abstände zwischen den Segmenten.</p>
+          <Slider min={350} max={500} bind:value={segmentWidth} label="Horizontal (px)" />
+          <Slider min={280} max={400} bind:value={segmentHeight} label="Vertikal (px)" />
+        </section>
+
+        <section>
+          <h4>Reihen X-Position</h4>
+          <p class="description">Stelle die X-Position jeder Reihe individuell ein.</p>
+          <Slider min={80} max={120} bind:value={baseStartX} label="Basis Start-X (px)" />
+          <Slider min={-50} max={50} bind:value={row1OffsetX} label="Reihe 1 Offset-X (px)" />
+          <Slider min={-50} max={50} bind:value={row2OffsetX} label="Reihe 2 Offset-X (px)" />
+          <Slider min={0} max={100} bind:value={row3OffsetX} label="Reihe 3 Offset-X (px)" />
+          <Slider min={0} max={100} bind:value={row4OffsetX} label="Reihe 4 Offset-X (px)" />
         </section>
       </div>
     </div>

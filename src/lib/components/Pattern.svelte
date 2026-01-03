@@ -20,6 +20,18 @@
       this.rowSpacing = options.rowSpacing !== undefined ? options.rowSpacing : 50;
       this.baseStartX = options.baseStartX || 100;
       
+      // Individuelle Row-Offsets
+      this.row1OffsetX = options.row1OffsetX;
+      this.row2OffsetX = options.row2OffsetX;
+      this.row3OffsetX = options.row3OffsetX;
+      this.row4OffsetX = options.row4OffsetX;
+      
+      // Row-Spiegelungen
+      this.row1Mirror = options.row1Mirror;
+      this.row2Mirror = options.row2Mirror;
+      this.row3Mirror = options.row3Mirror;
+      this.row4Mirror = options.row4Mirror;
+      
       this.segments = [];
     }
 
@@ -33,7 +45,15 @@
         baseStartX: this.baseStartX,
         trapezColor: this.trapezColor,
         dreieckColor: this.dreieckColor,
-        parallelogrammColor: this.parallelogrammColor
+        parallelogrammColor: this.parallelogrammColor,
+        row1OffsetX: this.row1OffsetX,
+        row2OffsetX: this.row2OffsetX,
+        row3OffsetX: this.row3OffsetX,
+        row4OffsetX: this.row4OffsetX,
+        row1Mirror: this.row1Mirror,
+        row2Mirror: this.row2Mirror,
+        row3Mirror: this.row3Mirror,
+        row4Mirror: this.row4Mirror
       });
       this.segments.push({ segment, row, col });
       return segment;
@@ -47,6 +67,16 @@
           this.addSegment(row, col);
         }
       }
+    }
+    
+    // Aktualisiere Options und regeneriere alle Segments
+    updateOptions(newOptions) {
+      Object.assign(this, newOptions);
+      this.segments.forEach(({ segment }) => {
+        segment.options = { ...segment.options, ...newOptions };
+        segment.rows = [];
+        segment.generateRows(this.startY + (segment.offsetX / this.segmentWidth) * this.segmentHeight);
+      });
     }
 
     // Hole alle Elemente von allen Segmenten

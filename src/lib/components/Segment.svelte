@@ -14,18 +14,30 @@
       const baseOffsetX = this.options.rowOffsetX || 0;
       const rowSpacing = this.options.rowSpacing !== undefined ? this.options.rowSpacing : 50;
       
-      // 4 Reihen mit unterschiedlichen Transformationen wie in 5_MusterZwei
+      // Individuelle Row-Offsets (falls vorhanden)
+      const row1OffsetX = this.options.row1OffsetX !== undefined ? this.options.row1OffsetX : 0;
+      const row2OffsetX = this.options.row2OffsetX !== undefined ? this.options.row2OffsetX : 0;
+      const row3OffsetX = this.options.row3OffsetX !== undefined ? this.options.row3OffsetX : rowSpacing;
+      const row4OffsetX = this.options.row4OffsetX !== undefined ? this.options.row4OffsetX : rowSpacing;
+      
+      // Spiegelungs-Flags (falls vorhanden)
+      const row1Mirror = this.options.row1Mirror !== undefined ? this.options.row1Mirror : false;
+      const row2Mirror = this.options.row2Mirror !== undefined ? this.options.row2Mirror : true;
+      const row3Mirror = this.options.row3Mirror !== undefined ? this.options.row3Mirror : true;
+      const row4Mirror = this.options.row4Mirror !== undefined ? this.options.row4Mirror : false;
+      
+      // 4 Reihen mit unterschiedlichen Transformationen
       // Row 1: Standard (100-500)
-      this.rows.push(new Row(startY, this.offsetX + baseOffsetX, false, this.options));
+      this.rows.push(new Row(startY, this.offsetX + baseOffsetX + row1OffsetX, row1Mirror, this.options));
       
       // Row 2: Gespiegelt (500-100)
-      this.rows.push(new Row(startY + 2 * this.h, this.offsetX + baseOffsetX, true, this.options));
+      this.rows.push(new Row(startY + 2 * this.h, this.offsetX + baseOffsetX + row2OffsetX, row2Mirror, this.options));
       
       // Row 3: Offset +rowSpacing, gespiegelt (550-150)
-      this.rows.push(new Row(startY + 4 * this.h, this.offsetX + baseOffsetX + rowSpacing, true, this.options));
+      this.rows.push(new Row(startY + 4 * this.h, this.offsetX + baseOffsetX + row3OffsetX, row3Mirror, this.options));
       
       // Row 4: Offset +rowSpacing (150-550)
-      this.rows.push(new Row(startY + 6 * this.h, this.offsetX + baseOffsetX + rowSpacing, false, this.options));
+      this.rows.push(new Row(startY + 6 * this.h, this.offsetX + baseOffsetX + row4OffsetX, row4Mirror, this.options));
     }
 
     getAllElements() {
@@ -34,6 +46,13 @@
         allElements = [...allElements, ...row.getAllElements()];
       });
       return allElements;
+    }
+    
+    // Regeneriere alle Rows mit neuen Optionen
+    regenerateRows(startY, newOptions) {
+      this.options = { ...this.options, ...newOptions };
+      this.rows = [];
+      this.generateRows(startY);
     }
   }
 </script>
