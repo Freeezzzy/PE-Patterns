@@ -7,6 +7,20 @@
 
 	let { colors = $bindable(['#ff0000', '#00ff00', '#0000ff']), selectedColorIndex=$bindable(0), width, height, swatchSize = 40 } = $props();
     height = height || width;
+    
+    // Reaktive Variable für die aktuell ausgewählte Farbe
+    let selectedColor = $state(colors[selectedColorIndex] || '#ff0000');
+    
+    // Update selectedColor when selectedColorIndex changes
+    $effect(() => {
+        selectedColor = colors[selectedColorIndex] || '#ff0000';
+    });
+    
+    // Update colors array when selectedColor changes
+    function updateColor(newColor) {
+        colors[selectedColorIndex] = newColor;
+        colors = [...colors]; // Trigger reactivity
+    }
 </script>
 
 
@@ -22,7 +36,7 @@
         {/each}
     </div>
     <div class="color-picker-container">
-        <ColorPickerHSV bind:color={colors[selectedColorIndex]} width={width} height={height}/>
+        <ColorPickerHSV color={selectedColor} onColorChange={updateColor} width={width} height={height}/>
     </div>
 </div>
 

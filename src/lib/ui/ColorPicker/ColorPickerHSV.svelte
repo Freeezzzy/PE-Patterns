@@ -5,6 +5,7 @@
 
   let {
     color = $bindable(),
+    onColorChange = undefined,
     width = 200,
     height,
   } = $props();
@@ -117,7 +118,14 @@
 
     // guard to avoid immediate loop
     isSettingColorFromInternal = true;
-    color = out;
+    
+    // Update via callback or binding
+    if (onColorChange) {
+      onColorChange(out);
+    } else {
+      color = out;
+    }
+    
     lastNormalizedColor = normalized;
   });
 

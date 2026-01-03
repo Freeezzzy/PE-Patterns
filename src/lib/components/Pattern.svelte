@@ -32,6 +32,9 @@
       this.row3Mirror = options.row3Mirror;
       this.row4Mirror = options.row4Mirror;
       
+      // Modulo-Option
+      this.useModulo = options.useModulo !== undefined ? options.useModulo : true;
+      
       this.segments = [];
     }
 
@@ -53,7 +56,8 @@
         row1Mirror: this.row1Mirror,
         row2Mirror: this.row2Mirror,
         row3Mirror: this.row3Mirror,
-        row4Mirror: this.row4Mirror
+        row4Mirror: this.row4Mirror,
+        useModulo: this.useModulo
       });
       this.segments.push({ segment, row, col });
       return segment;

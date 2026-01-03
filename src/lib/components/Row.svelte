@@ -4,13 +4,19 @@
   import { Parallelogramm } from './Parallelogramm.svelte';
 
   export class Row {
-    constructor(y, offsetX = 0, reverse = false, options = {}) {
+    constructor(y, offsetX = 0, reverse = false, options = {}, rowIndex = 0) {
       this.y = y;
       this.offsetX = offsetX;
       this.reverse = reverse;
       this.options = options;
+      this.rowIndex = rowIndex;
       this.h = Math.sin(Math.PI / 3) * 50;
       this.elements = [];
+      // Wrap-Grenzen aus options (optional)
+      this.wrapWidth = options.wrapWidth || null;
+      this.wrapHeight = options.wrapHeight || null;
+      // Modulo-Option
+      this.useModulo = options.useModulo !== undefined ? options.useModulo : true;
       this.generateElements();
     }
 
@@ -44,10 +50,11 @@
         x: pos.x + this.offsetX
       }));
 
-      // Füge Trapeze hinzu
+      // Füge Trapeze hinzu mit Modulo-Logik: Gerade = Original, Ungerade = Invertiert
       const trapezColor = this.options.trapezColor || 'beige';
-      trapezPositions.forEach(pos => {
-        this.elements.push(new Trapez(pos.x, pos.y, pos.rotation, trapezColor));
+      trapezPositions.forEach((pos, index) => {
+        // Index innerhalb der Trapeze (0-9)
+        this.elements.push(new Trapez(pos.x, pos.y, pos.rotation, trapezColor, this.wrapWidth, this.wrapHeight, null, index, this.useModulo));
       });
 
       // Dreiecke und Parallelogramme (mit Offset)
@@ -74,10 +81,11 @@
       const dreieckColor = this.options.dreieckColor || 'teal';
       const parallelogrammColor = this.options.parallelogrammColor || 'blue';
       
-      this.elements.push(new Dreieck(dreieckX1, this.y - 43.301, 0, dreieckColor));
-      this.elements.push(new Dreieck(dreieckX2, this.y, 0, dreieckColor));
-      this.elements.push(new Parallelogramm(paraX1, this.y - 43.301, 0, parallelogrammColor, this.reverse));
-      this.elements.push(new Parallelogramm(paraX2, this.y, 0, parallelogrammColor, this.reverse));
+      // Index innerhalb der Dreiecke/Parallelogramme (0, 1)
+      this.elements.push(new Dreieck(dreieckX1, this.y - 43.301, 0, dreieckColor, this.wrapWidth, this.wrapHeight, null, 0, this.useModulo));
+      this.elements.push(new Dreieck(dreieckX2, this.y, 0, dreieckColor, this.wrapWidth, this.wrapHeight, null, 1, this.useModulo));
+      this.elements.push(new Parallelogramm(paraX1, this.y - 43.301, 0, parallelogrammColor, this.reverse, this.wrapWidth, this.wrapHeight, null, 0, this.useModulo));
+      this.elements.push(new Parallelogramm(paraX2, this.y, 0, parallelogrammColor, this.reverse, this.wrapWidth, this.wrapHeight, null, 1, this.useModulo));
     }
 
     getAllElements() {

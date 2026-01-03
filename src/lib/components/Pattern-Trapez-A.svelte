@@ -1,6 +1,7 @@
 <script>
   import { Pattern } from './Pattern.svelte';
   import EditableColorPalette from '$lib/ui/EditableColorPalette.svelte';
+  import Toggle from '$lib/ui/Toggle.svelte';
 
   // Default-Werte
   const DEFAULTS = {
@@ -17,7 +18,8 @@
     parallelogrammColor: '#191970',
     rowOffsetX: 0,
     rowSpacing: 50,
-    baseStartX: 100
+    baseStartX: 100,
+    useModulo: true
   };
 
   // Feste Parameter (nicht änderbar)
@@ -37,6 +39,9 @@
   let trapezColor = DEFAULTS.trapezColor;
   let dreieckColor = DEFAULTS.dreieckColor;
   let parallelogrammColor = DEFAULTS.parallelogrammColor;
+  
+  // Modulo-Option
+  let useModulo = DEFAULTS.useModulo;
 
   // UI State
   let panelCollapsed = false;
@@ -50,27 +55,30 @@
 
   function resetAll() {
     colors = [DEFAULTS.trapezColor, DEFAULTS.dreieckColor, DEFAULTS.parallelogrammColor];
+    useModulo = DEFAULTS.useModulo;
   }
   
-  // Berechne Pattern basierend auf Parametern
-  $: pattern = new Pattern(startY, {
-    segmentWidth,
-    segmentHeight,
-    segmentOffsetX,
-    segmentOffsetY,
-    trapezColor,
-    dreieckColor,
-    parallelogrammColor,
-    rowOffsetX,
-    rowSpacing,
-    baseStartX
-  });
+  // PatternKey für Re-Rendering bei Änderungen
+  $: patternKey = `${useModulo}-${colors.join('-')}`;
   
-  $: {
-    pattern.generateGrid(rows, cols);
-  }
-  
-  $: allElements = pattern.getAllElements();
+  // Berechne Pattern basierend auf Parametern - komplett neu erstellen bei Änderungen
+  $: allElements = (() => {
+    const newPattern = new Pattern(startY, {
+      segmentWidth,
+      segmentHeight,
+      segmentOffsetX,
+      segmentOffsetY,
+      trapezColor,
+      dreieckColor,
+      parallelogrammColor,
+      rowOffsetX,
+      rowSpacing,
+      baseStartX,
+      useModulo
+    });
+    newPattern.generateGrid(rows, cols);
+    return newPattern.getAllElements();
+  })();
   
   // Berechne viewBox - quadratisch
   const h = Math.sin(Math.PI / 3) * 50;
@@ -114,6 +122,12 @@
             swatchSize={30}
           />
         </section>
+        
+        <section>
+          <h4>Modulo-Logik</h4>
+          <p class="description">Wechsle zwischen Original- und Negativfarben bei aufeinanderfolgenden Elementen.</p>
+          <Toggle bind:value={useModulo} label="Modulo aktivieren" />
+        </section>
       </div>
     </div>
   {/if}
@@ -127,17 +141,19 @@
     <svg viewBox="0 0 {viewBoxWidth} {viewBoxHeight}" style="border: 1px solid black; width: min(90vw, 90vh); height: min(90vw, 90vh);">
       <rect x="0" y="0" width="{viewBoxWidth}" height="{viewBoxHeight}" fill="#2d2d2dff" stroke="none" />
       
+      {#key patternKey}
       <g transform="translate({centerX}, {centerY}) scale({scale})">
         {#each allElements as element}
           <polygon
             points={element.getPoints()}
-            fill={element.type === 'trapez' ? trapezColor : element.type === 'dreieck' ? dreieckColor : parallelogrammColor}
+            fill={element.fill}
             stroke="black"
             stroke-width="1"
             transform={element.getTransform()}
         />
       {/each}
       </g>
+      {/key}
     </svg>
   </div>
 </div>
