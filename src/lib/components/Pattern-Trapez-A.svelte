@@ -7,7 +7,7 @@
   const DEFAULTS = {
     rows: 2,
     cols: 2,
-    startY: 100,
+    startY: 197,
     segmentWidth: 450,
     segmentHeight: 346,
     segmentOffsetX: 0,
@@ -18,7 +18,7 @@
     parallelogrammColor: '#191970',
     rowOffsetX: 0,
     rowSpacing: 50,
-    baseStartX: 100,
+    baseStartX: 10,
     useModulo: true
   };
 
@@ -82,7 +82,7 @@
   
   // Berechne viewBox - quadratisch
   const h = Math.sin(Math.PI / 3) * 50;
-  $: viewBoxSize = 1200; // Feste quadratische Größe
+  $: viewBoxSize = 1000; // Feste quadratische Größe
   $: viewBoxWidth = viewBoxSize;
   $: viewBoxHeight = viewBoxSize;
   
@@ -96,9 +96,9 @@
   $: patternEndY = startY + (rows * segmentHeight) + segmentOffsetY;
   $: patternRealHeight = patternEndY - patternStartY;
   
-  // Zentriere Pattern in der viewBox - berücksichtige dass Pattern bei patternStartX beginnt
-  $: centerX = (viewBoxWidth - (patternRealWidth * scale + patternStartX * scale)) / 2;
-  $: centerY = (viewBoxHeight - (patternRealHeight * scale + patternStartY * scale)) / 2;
+  // Kein zusätzliches Zentrieren - Pattern wird direkt gezeichnet
+  $: centerX = 0;
+  $: centerY = 0;
 </script>
 
 <div style="position: relative; width: 100vw; height: 100vh;">
@@ -138,7 +138,7 @@
 
   <!-- SVG Canvas (immer zentriert) -->
   <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; overflow: auto;">
-    <svg viewBox="0 0 {viewBoxWidth} {viewBoxHeight}" style="border: 1px solid black; width: min(90vw, 90vh); height: min(90vw, 90vh);">
+    <svg viewBox="0 0 {viewBoxWidth} {viewBoxHeight}" style="border: 1px solid black; width: 1000px; height: 1000px;">
       <rect x="0" y="0" width="{viewBoxWidth}" height="{viewBoxHeight}" fill="#2d2d2dff" stroke="none" />
       
       {#key patternKey}

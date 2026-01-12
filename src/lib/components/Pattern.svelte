@@ -101,7 +101,7 @@
   let elements = pattern.getAllElements();
 </script>
 
-<svg viewBox="0 0 1200 800" style="border: 1px solid black; width: 100%; height: 100vh;">
+<svg viewBox="0 0 1000 1000" style="border: 1px ; width: 100%; height: 100vh;">
   {#each elements as element}
     <polygon
       points={element.getPoints()}

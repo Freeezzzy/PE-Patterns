@@ -23,21 +23,21 @@
     generateElements() {
       // Standard-Reihe (wie Row 1 aus 5_MusterZwei)
       let trapezPositions = [
-        { x: 100, y: this.y, rotation: 0 },
-        { x: 125, y: this.y - this.h, rotation: 0 },
-        { x: 175, y: this.y, rotation: 180 },
-        { x: 200, y: this.y - this.h, rotation: 180 },
-        { x: 250, y: this.y, rotation: 0 },
-        { x: 275, y: this.y - this.h, rotation: 0 },
-        { x: 350, y: this.y, rotation: 0 },
-        { x: 375, y: this.y - this.h, rotation: 0 },
-        { x: 475, y: this.y, rotation: 180 },
-        { x: 500, y: this.y - this.h, rotation: 180 }
+        { x: 40, y: this.y, rotation: 0 },
+        { x: 65, y: this.y - this.h, rotation: 0 },
+        { x: 115, y: this.y, rotation: 180 },
+        { x: 140, y: this.y - this.h, rotation: 180 },
+        { x: 190, y: this.y, rotation: 0 },
+        { x: 215, y: this.y - this.h, rotation: 0 },
+        { x: 290, y: this.y, rotation: 0 },
+        { x: 315, y: this.y - this.h, rotation: 0 },
+        { x: 415, y: this.y, rotation: 180 },
+        { x: 440, y: this.y - this.h, rotation: 180 }
       ];
 
       // Wenn reverse = true, spiegle die x-Positionen
       if (this.reverse) {
-        const maxX = 600;
+        const maxX = 480;
         trapezPositions = trapezPositions.map(pos => ({
           ...pos,
           x: maxX - pos.x
@@ -58,14 +58,14 @@
       });
 
       // Dreiecke und Parallelogramme (mit Offset)
-      let dreieckX1 = 325;
-      let dreieckX2 = 300;
-      let paraX1 = 425;
-      let paraX2 = 400;
+      let dreieckX1 = 265;
+      let dreieckX2 = 240;
+      let paraX1 = 365;
+      let paraX2 = 340;
 
       // Bei reverse: spiegle die X-Positionen
       if (this.reverse) {
-        const maxX = 600;
+        const maxX = 480;
         dreieckX1 = maxX - dreieckX1;
         dreieckX2 = maxX - dreieckX2;
         paraX1 = maxX - paraX1;

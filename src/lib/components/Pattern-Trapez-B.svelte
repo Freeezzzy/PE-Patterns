@@ -6,18 +6,17 @@
   const DEFAULTS = {
     rows: 2,
     cols: 2,
-    startY: 100,
+    startY: 197,
     segmentWidth: 450,
     segmentHeight: 346,
-    segmentOffsetX: 0,
-    segmentOffsetY: 0,
+    segmentSpacingX: 0,
+    segmentSpacingY: 0,
     scale: 1,
     trapezColor: '#ffd7b5',
     dreieckColor: '#d2691e',
     parallelogrammColor: '#8b4513',
     rowOffsetX: 0,
-    rowSpacing: 50,
-    baseStartX: 100
+    rowSpacing: 50
   };
 
   // Feste Parameter (nicht änderbar)
@@ -32,17 +31,20 @@
   // Nur Positionen und Abstände sind änderbar
   let segmentWidth = DEFAULTS.segmentWidth;
   let segmentHeight = DEFAULTS.segmentHeight;
-  let segmentOffsetX = DEFAULTS.segmentOffsetX;
-  let segmentOffsetY = DEFAULTS.segmentOffsetY;
+  let segmentSpacingX = DEFAULTS.segmentSpacingX;
+  let segmentSpacingY = DEFAULTS.segmentSpacingY;
   let rowOffsetX = DEFAULTS.rowOffsetX;
   let rowSpacing = DEFAULTS.rowSpacing;
-  let baseStartX = DEFAULTS.baseStartX;
   
   // Individuelle Row-Offsets
   let row1OffsetX = 0;
   let row2OffsetX = 0;
   let row3OffsetX = 50;
   let row4OffsetX = 50;
+  
+  // baseStartX am linken Rand
+  const viewBoxSize = 1000;
+  const baseStartX = 10;
   
   let pattern;
 
@@ -52,11 +54,10 @@
   function resetAll() {
     segmentWidth = DEFAULTS.segmentWidth;
     segmentHeight = DEFAULTS.segmentHeight;
-    segmentOffsetX = DEFAULTS.segmentOffsetX;
-    segmentOffsetY = DEFAULTS.segmentOffsetY;
+    segmentSpacingX = DEFAULTS.segmentSpacingX;
+    segmentSpacingY = DEFAULTS.segmentSpacingY;
     rowOffsetX = DEFAULTS.rowOffsetX;
     rowSpacing = DEFAULTS.rowSpacing;
-    baseStartX = DEFAULTS.baseStartX;
     row1OffsetX = 0;
     row2OffsetX = 0;
     row3OffsetX = 50;
@@ -68,8 +69,8 @@
     const newPattern = new Pattern(startY, {
       segmentWidth,
       segmentHeight,
-      segmentOffsetX,
-      segmentOffsetY,
+      segmentSpacingX,
+      segmentSpacingY,
       trapezColor,
       dreieckColor,
       parallelogrammColor,
@@ -88,22 +89,21 @@
   
   // Berechne viewBox - quadratisch
   const h = Math.sin(Math.PI / 3) * 50;
-  $: viewBoxSize = 1200;
   $: viewBoxWidth = viewBoxSize;
   $: viewBoxHeight = viewBoxSize;
   
   // Berechne die echte Bounding Box des Patterns
-  $: patternStartX = baseStartX + rowOffsetX + segmentOffsetX;
-  $: patternEndX = patternStartX + (cols * segmentWidth);
+  $: patternStartX = baseStartX + rowOffsetX - segmentSpacingX;
+  $: patternEndX = patternStartX + (cols * segmentWidth) + (2 * segmentSpacingX);
   $: patternRealWidth = patternEndX - patternStartX;
   
-  $: patternStartY = startY;
-  $: patternEndY = startY + (rows * segmentHeight) + segmentOffsetY;
+  $: patternStartY = startY - segmentSpacingY;
+  $: patternEndY = startY + (rows * segmentHeight) + segmentSpacingY;
   $: patternRealHeight = patternEndY - patternStartY;
   
-  // Zentriere Pattern in der viewBox
-  $: centerX = (viewBoxWidth - (patternRealWidth * scale + patternStartX * scale)) / 2;
-  $: centerY = (viewBoxHeight - (patternRealHeight * scale + patternStartY * scale)) / 2;
+  // Kein zusätzliches Zentrieren - Pattern wird direkt gezeichnet
+  $: centerX = 0;
+  $: centerY = 0;
 </script>
 
 <div style="position: relative; width: 100vw; height: 100vh;">
@@ -117,23 +117,15 @@
 
       <div class="sidebar-content">
         <section>
-          <h4>Segment-Offset</h4>
-          <p class="description">Verschiebe alle Segmente gemeinsam.</p>
-          <Slider min={-50} max={50} bind:value={segmentOffsetX} label="Offset X (px)" />
-          <Slider min={-50} max={50} bind:value={segmentOffsetY} label="Offset Y (px)" />
-        </section>
-
-        <section>
           <h4>Segment-Abstände</h4>
-          <p class="description">Ändere die Abstände zwischen den Segmenten.</p>
-          <Slider min={450} max={550} bind:value={segmentWidth} label="Horizontal (px)" />
-          <Slider min={346} max={450} bind:value={segmentHeight} label="Vertikal (px)" />
+          <p class="description">Bewege Segmente von der Mitte des Canvas weg (oben/unten, links/rechts).</p>
+          <Slider min={0} max={100} bind:value={segmentSpacingX} label="Horizontal (px)" />
+          <Slider min={0} max={100} bind:value={segmentSpacingY} label="Vertikal (px)" />
         </section>
 
         <section>
           <h4>Reihen X-Position</h4>
           <p class="description">Stelle die X-Position jeder Reihe individuell ein.</p>
-          <Slider min={100} max={150} bind:value={baseStartX} label="Basis Start-X (px)" />
           <Slider min={-20} max={20} bind:value={row1OffsetX} label="Reihe 1 Offset-X (px)" />
           <Slider min={-20} max={20} bind:value={row2OffsetX} label="Reihe 2 Offset-X (px)" />
           <Slider min={30} max={70} bind:value={row3OffsetX} label="Reihe 3 Offset-X (px)" />
@@ -149,7 +141,7 @@
 
   <!-- SVG Canvas (immer zentriert) -->
   <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; overflow: auto;">
-    <svg viewBox="0 0 {viewBoxWidth} {viewBoxHeight}" style="border: 1px solid black; width: min(90vw, 90vh); height: min(90vw, 90vh);">
+    <svg viewBox="0 0 {viewBoxWidth} {viewBoxHeight}" style="border: 1px solid black; width: 1000px; height: 1000px;">
       <rect x="0" y="0" width="{viewBoxWidth}" height="{viewBoxHeight}" fill="#2d2d2dff" stroke="none" />
       
       <g transform="translate({centerX}, {centerY}) scale({scale})">
