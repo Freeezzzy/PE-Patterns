@@ -39,17 +39,17 @@
   // Individuelle Row-Offsets
   let row1OffsetX = 0;
   let row2OffsetX = 0;
-  let row3OffsetX = 50;
-  let row4OffsetX = 50;
+  let row3OffsetX = 0;
+  let row4OffsetX = 0;
   
-  // baseStartX am linken Rand
+  // baseStartX - fix
   const viewBoxSize = 1000;
   const baseStartX = 10;
   
   let pattern;
 
   // UI State
-  let panelCollapsed = false;
+  // Panel ist permanent sichtbar
 
   function resetAll() {
     segmentWidth = DEFAULTS.segmentWidth;
@@ -60,8 +60,8 @@
     rowSpacing = DEFAULTS.rowSpacing;
     row1OffsetX = 0;
     row2OffsetX = 0;
-    row3OffsetX = 50;
-    row4OffsetX = 50;
+    row3OffsetX = 0;
+    row4OffsetX = 0;
   }
   
   // Berechne Pattern basierend auf Parametern - komplett neu erstellen bei Änderungen
@@ -79,8 +79,8 @@
       baseStartX,
       row1OffsetX,
       row2OffsetX,
-      row3OffsetX,
-      row4OffsetX
+      row3OffsetX: row3OffsetX + 50,
+      row4OffsetX: row4OffsetX + 50
     });
     newPattern.generateGrid(rows, cols);
     pattern = newPattern;
@@ -107,37 +107,49 @@
 </script>
 
 <div style="position: relative; width: 100vw; height: 100vh;">
-  <!-- Controls Panel (absolut positioniert) -->
-  {#if !panelCollapsed}
-    <div class="sidebar">
-      <div class="sidebar-header">
-        <h3>Pattern B - Positionen & Abstände</h3>
-        <button class="reset-all-btn" on:click={resetAll}>Reset</button>
-      </div>
+  <!-- Controls Panel (permanent sichtbar) -->
+  <div class="sidebar">
+    <div class="sidebar-header">
+      <h3>Pattern B - Positionen & Abstände</h3>
+      <button class="reset-all-btn" on:click={resetAll}>Reset</button>
+    </div>
 
       <div class="sidebar-content">
         <section>
           <h4>Segment-Abstände</h4>
           <p class="description">Bewege Segmente von der Mitte des Canvas weg (oben/unten, links/rechts).</p>
-          <Slider min={0} max={100} bind:value={segmentSpacingX} label="Horizontal (px)" />
-          <Slider min={0} max={100} bind:value={segmentSpacingY} label="Vertikal (px)" />
+          <div class="slider-with-reset">
+            <Slider min={0} max={100} bind:value={segmentSpacingX} label="Horizontal (px)" />
+            <button class="reset-btn" on:click={() => segmentSpacingX = DEFAULTS.segmentSpacingX}>↻</button>
+          </div>
+          <div class="slider-with-reset">
+            <Slider min={0} max={100} bind:value={segmentSpacingY} label="Vertikal (px)" />
+            <button class="reset-btn" on:click={() => segmentSpacingY = DEFAULTS.segmentSpacingY}>↻</button>
+          </div>
         </section>
 
         <section>
           <h4>Reihen X-Position</h4>
           <p class="description">Stelle die X-Position jeder Reihe individuell ein.</p>
-          <Slider min={-20} max={20} bind:value={row1OffsetX} label="Reihe 1 Offset-X (px)" />
-          <Slider min={-20} max={20} bind:value={row2OffsetX} label="Reihe 2 Offset-X (px)" />
-          <Slider min={30} max={70} bind:value={row3OffsetX} label="Reihe 3 Offset-X (px)" />
-          <Slider min={30} max={70} bind:value={row4OffsetX} label="Reihe 4 Offset-X (px)" />
+          <div class="slider-with-reset">
+            <Slider min={-100} max={100} bind:value={row1OffsetX} label="Reihe 1 Offset-X (px)" />
+            <button class="reset-btn" on:click={() => row1OffsetX = 0}>↻</button>
+          </div>
+          <div class="slider-with-reset">
+            <Slider min={-100} max={100} bind:value={row2OffsetX} label="Reihe 2 Offset-X (px)" />
+            <button class="reset-btn" on:click={() => row2OffsetX = 0}>↻</button>
+          </div>
+          <div class="slider-with-reset">
+            <Slider min={-100} max={100} bind:value={row3OffsetX} label="Reihe 3 Offset-X (px)" />
+            <button class="reset-btn" on:click={() => row3OffsetX = 0}>↻</button>
+          </div>
+          <div class="slider-with-reset">
+            <Slider min={-100} max={100} bind:value={row4OffsetX} label="Reihe 4 Offset-X (px)" />
+            <button class="reset-btn" on:click={() => row4OffsetX = 0}>↻</button>
+          </div>
         </section>
       </div>
     </div>
-  {/if}
-
-  <button class="toggle-button" class:collapsed={panelCollapsed} on:click={() => panelCollapsed = !panelCollapsed}>
-    <span class="arrow">{panelCollapsed ? '›' : '‹'}</span>
-  </button>
 
   <!-- SVG Canvas (immer zentriert) -->
   <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; overflow: auto;">
@@ -245,6 +257,45 @@
     font-size: 0.85rem;
     line-height: 1.4;
     margin: 0;
+  }
+
+  .slider-with-reset {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .slider-with-reset :global(.slider-container) {
+    flex: 1;
+    min-width: 0;
+    max-width: calc(100% - 40px);
+  }
+
+  .reset-btn {
+    padding: 6px 10px;
+    cursor: pointer;
+    background: #444;
+    color: white;
+    border: 1px solid #666;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: bold;
+    min-width: 32px;
+    height: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+  }
+
+  .reset-btn:hover {
+    background: #555;
+    border-color: #777;
+  }
+
+  .reset-btn:active {
+    transform: scale(0.95);
   }
 
   .toggle-button {

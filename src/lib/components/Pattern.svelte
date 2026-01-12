@@ -11,6 +11,8 @@
       this.segmentHeight = options.segmentHeight || (8 * this.h);
       this.segmentOffsetX = options.segmentOffsetX || 0;
       this.segmentOffsetY = options.segmentOffsetY || 0;
+      this.segmentSpacingX = options.segmentSpacingX !== undefined ? options.segmentSpacingX : 0;
+      this.segmentSpacingY = options.segmentSpacingY !== undefined ? options.segmentSpacingY : 0;
       this.trapezColor = options.trapezColor || 'beige';
       this.dreieckColor = options.dreieckColor || 'teal';
       this.parallelogrammColor = options.parallelogrammColor || 'midnightblue';
@@ -40,8 +42,12 @@
 
     // Füge Segment an Grid-Position (row, col) hinzu
     addSegment(row, col) {
-      const offsetX = col * this.segmentWidth + this.segmentOffsetX;
-      const offsetY = row * this.segmentHeight + this.segmentOffsetY;
+      // Spacing: Segmente bewegen sich von der Mitte weg
+      const spacingOffsetX = (col === 0) ? -this.segmentSpacingX : this.segmentSpacingX;
+      const spacingOffsetY = (row === 0) ? -this.segmentSpacingY : this.segmentSpacingY;
+      
+      const offsetX = col * this.segmentWidth + this.segmentOffsetX + spacingOffsetX;
+      const offsetY = row * this.segmentHeight + this.segmentOffsetY + spacingOffsetY;
       const segment = new Segment(this.startY + offsetY, offsetX, {
         rowOffsetX: this.rowOffsetX,
         rowSpacing: this.rowSpacing,
