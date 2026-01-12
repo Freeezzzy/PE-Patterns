@@ -137,7 +137,7 @@
   </button>
 
   <!-- SVG Canvas (immer zentriert) -->
-  <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; overflow: auto;">
+  <div style="width: 100%; height: 100%; display: flex; align-items: flex-start; justify-content: center; overflow: auto; padding-top: 20px;">
     <svg viewBox="0 0 {viewBoxWidth} {viewBoxHeight}" style="border: 1px solid black; width: 1000px; height: 1000px;">
       <rect x="0" y="0" width="{viewBoxWidth}" height="{viewBoxHeight}" fill="#2d2d2dff" stroke="none" />
       
