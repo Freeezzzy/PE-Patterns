@@ -43,8 +43,6 @@
   let mirrorRow4 = false;
 
   // UI State
-  let panelCollapsed = false;
-  
   let pattern;
 
   function resetAll() {
@@ -100,31 +98,25 @@
 
 <div style="position: relative; width: 100vw; height: 100vh;">
   <!-- Controls Panel (absolut positioniert) -->
-  {#if !panelCollapsed}
-    <div class="sidebar">
-      <div class="sidebar-header">
-        <h3>Pattern C - Reihen-Spiegelung</h3>
-        <button class="reset-all-btn" on:click={resetAll}>Reset</button>
-      </div>
-
-      <div class="sidebar-content">
-        <section>
-          <h4>Reihen-Spiegelung</h4>
-          <p class="description">Spiegele jede Reihe einzeln. Jedes Segment hat 4 Reihen.</p>
-          <Toggle bind:value={mirrorRow1} label="Reihe 1 spiegeln" />
-          <Toggle bind:value={mirrorRow2} label="Reihe 2 spiegeln" />
-          <Toggle bind:value={mirrorRow3} label="Reihe 3 spiegeln" />
-          <Toggle bind:value={mirrorRow4} label="Reihe 4 spiegeln" />
-        </section>
-      </div>
+  <div class="sidebar">
+    <div class="sidebar-header">
+      <h3>Pattern C - Reihen-Spiegelung</h3>
+      <button class="reset-all-btn" on:click={resetAll}>Reset</button>
     </div>
-  {/if}
 
-  <button class="toggle-button" class:collapsed={panelCollapsed} on:click={() => panelCollapsed = !panelCollapsed}>
-    <span class="arrow">{panelCollapsed ? '›' : '‹'}</span>
-  </button>
+    <div class="sidebar-content">
+      <section>
+        <h4>Reihen-Spiegelung</h4>
+        <p class="description">Spiegele jede Reihe einzeln. Jedes Segment hat 4 Reihen.</p>
+        <Toggle bind:value={mirrorRow1} label="Reihe 1 spiegeln" />
+        <Toggle bind:value={mirrorRow2} label="Reihe 2 spiegeln" />
+        <Toggle bind:value={mirrorRow3} label="Reihe 3 spiegeln" />
+        <Toggle bind:value={mirrorRow4} label="Reihe 4 spiegeln" />
+      </section>
+    </div>
+  </div>
 
-  <!-- SVG Canvas (immer zentriert) -->
+  <!-- SVG Canvas -->
   <div style="width: 100%; height: 100%; display: flex; align-items: flex-start; justify-content: center; overflow: auto; padding-top: 20px; padding-left: 400px;">
     <svg viewBox="0 0 {viewBoxWidth} {viewBoxHeight}" style="border: 1px solid black; width: 1000px; height: 1000px;">
       <rect x="0" y="0" width="{viewBoxWidth}" height="{viewBoxHeight}" fill="#2d2d2dff" stroke="none" />
@@ -232,46 +224,5 @@
     font-size: 0.85rem;
     line-height: 1.4;
     margin: 0;
-  }
-
-  .toggle-button {
-    position: fixed;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 30px;
-    height: 80px;
-    cursor: pointer;
-    border: none;
-    background: #666;
-    color: white;
-    font-size: 20px;
-    font-weight: bold;
-    border-radius: 0 8px 8px 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 99;
-    transition: all 0.2s;
-  }
-
-  .toggle-button:hover {
-    background: #555;
-  }
-
-  .toggle-button.collapsed {
-    left: 0;
-  }
-
-  .toggle-button:not(.collapsed) {
-    left: 350px;
-  }
-
-  .toggle-button .arrow {
-    font-size: 28px;
-  }
-
-  .toggle-button:active {
-    transform: translateY(-50%) scale(0.95);
   }
 </style>

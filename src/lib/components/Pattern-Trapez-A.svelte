@@ -44,7 +44,6 @@
   let useModulo = DEFAULTS.useModulo;
 
   // UI State
-  let panelCollapsed = false;
   let selectedColorIndex = 0;
   let colors = [trapezColor, dreieckColor, parallelogrammColor];
 
@@ -103,40 +102,34 @@
 
 <div style="position: relative; width: 100vw; height: 100vh;">
   <!-- Controls Panel (absolut positioniert) -->
-  {#if !panelCollapsed}
-    <div class="sidebar">
-      <div class="sidebar-header">
-        <h3>Pattern A - Farbänderungen</h3>
-        <button class="reset-all-btn" on:click={resetAll}>Reset All</button>
-      </div>
-
-      <div class="sidebar-content">
-        <section>
-          <h4>Farbpalette</h4>
-          <p class="description">In diesem Pattern können nur die Farben geändert werden. Die Geometrie ist fest.</p>
-          <EditableColorPalette
-            bind:colors
-            bind:selectedColorIndex
-            width={310}
-            height={310}
-            swatchSize={30}
-          />
-        </section>
-        
-        <section>
-          <h4>Modulo-Logik</h4>
-          <p class="description">Wechsle zwischen Original- und Negativfarben bei aufeinanderfolgenden Elementen.</p>
-          <Toggle bind:value={useModulo} label="Modulo aktivieren" />
-        </section>
-      </div>
+  <div class="sidebar">
+    <div class="sidebar-header">
+      <h3>Pattern A - Farbänderungen</h3>
+      <button class="reset-all-btn" on:click={resetAll}>Reset All</button>
     </div>
-  {/if}
 
-  <button class="toggle-button" class:collapsed={panelCollapsed} on:click={() => panelCollapsed = !panelCollapsed}>
-    <span class="arrow">{panelCollapsed ? '›' : '‹'}</span>
-  </button>
+    <div class="sidebar-content">
+      <section>
+        <h4>Farbpalette</h4>
+        <p class="description">In diesem Pattern können nur die Farben geändert werden. Die Geometrie ist fest.</p>
+        <EditableColorPalette
+          bind:colors
+          bind:selectedColorIndex
+          width={310}
+          height={310}
+          swatchSize={30}
+        />
+      </section>
+      
+      <section>
+        <h4>Modulo-Logik</h4>
+        <p class="description">Wechsle zwischen Original- und Negativfarben bei aufeinanderfolgenden Elementen.</p>
+        <Toggle bind:value={useModulo} label="Modulo aktivieren" />
+      </section>
+    </div>
+  </div>
 
-  <!-- SVG Canvas (immer zentriert) -->
+  <!-- SVG Canvas -->
   <div style="width: 100%; height: 100%; display: flex; align-items: flex-start; justify-content: center; overflow: auto; padding-top: 20px; padding-left: 400px;">
     <svg viewBox="0 0 {viewBoxWidth} {viewBoxHeight}" style="border: 1px solid black; width: 1000px; height: 1000px;">
       <rect x="0" y="0" width="{viewBoxWidth}" height="{viewBoxHeight}" fill="#2d2d2dff" stroke="none" />
@@ -244,46 +237,5 @@
     font-size: 0.85rem;
     line-height: 1.4;
     margin: 0;
-  }
-
-  .toggle-button {
-    position: fixed;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 30px;
-    height: 80px;
-    cursor: pointer;
-    border: none;
-    background: #666;
-    color: white;
-    font-size: 20px;
-    font-weight: bold;
-    border-radius: 0 8px 8px 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 99;
-    transition: all 0.2s;
-  }
-
-  .toggle-button:hover {
-    background: #555;
-  }
-
-  .toggle-button.collapsed {
-    left: 0;
-  }
-
-  .toggle-button:not(.collapsed) {
-    left: 350px;
-  }
-
-  .toggle-button .arrow {
-    font-size: 28px;
-  }
-
-  .toggle-button:active {
-    transform: translateY(-50%) scale(0.95);
   }
 </style>
