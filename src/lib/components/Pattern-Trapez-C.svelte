@@ -4,9 +4,9 @@
 
   // Default-Werte (feste Farben und Grid)
   const DEFAULTS = {
-    rows: 2,
-    cols: 2,
-    startY: 197,
+    rows: 4,
+    cols: 4,
+    startY: -149,
     segmentWidth: 450,
     segmentHeight: 346,
     segmentOffsetX: 0,
@@ -17,7 +17,7 @@
     parallelogrammColor: '#2f4f2f',
     rowOffsetX: 0,
     rowSpacing: 50,
-    baseStartX: 10
+    baseStartX: -440
   };
 
   // Feste Parameter

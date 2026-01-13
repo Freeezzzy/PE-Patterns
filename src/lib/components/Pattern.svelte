@@ -42,9 +42,18 @@
 
     // Füge Segment an Grid-Position (row, col) hinzu
     addSegment(row, col) {
-      // Spacing: Segmente bewegen sich von der Mitte weg
-      const spacingOffsetX = (col === 0) ? -this.segmentSpacingX : this.segmentSpacingX;
-      const spacingOffsetY = (row === 0) ? -this.segmentSpacingY : this.segmentSpacingY;
+      // Spacing: Segmente bewegen sich proportional zur Distanz vom Zentrum
+      // Berechne das Zentrum des Grids
+      const centerCol = (this.cols - 1) / 2;
+      const centerRow = (this.rows - 1) / 2;
+      
+      // Berechne die Distanz vom Zentrum (negativ für links/oben, positiv für rechts/unten)
+      const distX = col - centerCol;
+      const distY = row - centerRow;
+      
+      // Wende Spacing proportional zur Distanz an
+      const spacingOffsetX = distX * this.segmentSpacingX;
+      const spacingOffsetY = distY * this.segmentSpacingY;
       
       const offsetX = col * this.segmentWidth + this.segmentOffsetX + spacingOffsetX;
       const offsetY = row * this.segmentHeight + this.segmentOffsetY + spacingOffsetY;
@@ -72,6 +81,8 @@
     // Generiere Grid automatisch (rows x cols)
     generateGrid(rows, cols) {
       this.segments = []; // Clear existing segments
+      this.rows = rows;
+      this.cols = cols;
       for (let row = 0; row < rows; row++) {
         for (let col = 0; col < cols; col++) {
           this.addSegment(row, col);

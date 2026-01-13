@@ -7,6 +7,7 @@
 	import PatternTrapezA from '$lib/components/Pattern-Trapez-A.svelte';
 	import PatternTrapezB from '$lib/components/Pattern-Trapez-B.svelte';
 	import PatternTrapezC from '$lib/components/Pattern-Trapez-C.svelte';
+	import PatternTrapezD from '$lib/components/Pattern-Trapez-D.svelte';
 
 	// Load pattern from localStorage or default to 'MusterEins'
 	let selectedPattern = $state(
@@ -23,6 +24,7 @@
 		{ id: 'PatternTrapezA', name: 'Pattern Trapez A - Nur Farben' },
 		{ id: 'PatternTrapezB', name: 'Pattern Trapez B - Positionen & Abstände' },
 		{ id: 'PatternTrapezC', name: 'Pattern Trapez C - Reihen-Spiegelung' },
+		{ id: 'PatternTrapezD', name: 'Pattern Trapez D - Master Pattern' },
 	];
 
 	$effect(() => {
@@ -61,6 +63,8 @@
 			<PatternTrapezB />
 		{:else if selectedPattern === 'PatternTrapezC'}
 			<PatternTrapezC />
+		{:else if selectedPattern === 'PatternTrapezD'}
+			<PatternTrapezD />
 		{/if}
 	</main>
 </div>
