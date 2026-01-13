@@ -22,7 +22,7 @@
     rowOffsetX: 0,
     rowSpacing: 50,
     baseStartX: -440,
-    useModulo: true
+    useModulo: false
   };
 
   // Feste Parameter
