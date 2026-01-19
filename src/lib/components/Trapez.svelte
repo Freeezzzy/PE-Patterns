@@ -36,10 +36,15 @@
       this.type = 'trapez';
       this.h = Math.sin(Math.PI / 3) * 50;
       
-      // Einfache Negativ/Positiv-Logik basierend auf elementIndex
+      // Neue Modulo-Logik: Berücksichtigt die Rotation
+      // rotation: 0 = oberes Trapez, rotation: 180 = unteres Trapez
       if (elementIndex !== null && elementIndex !== undefined && useModulo) {
-        // Gerade Indizes: Original-Farbe, Ungerade: Invertierte Farbe (nur wenn useModulo aktiv)
-        this.fill = (elementIndex % 2 === 0) ? fill : invertColor(fill);
+        // Wenn rotation = 180 (unteres Trapez), invertiere die Modulo-Logik
+        const shouldInvert = (rotation === 180) 
+          ? (elementIndex % 2 === 1)  // Ungerade = Original für untere Trapeze
+          : (elementIndex % 2 === 0); // Gerade = Original für obere Trapeze
+        
+        this.fill = shouldInvert ? fill : invertColor(fill);
       } else if (elementIndex !== null && elementIndex !== undefined && !useModulo) {
         // Modulo deaktiviert: Alle nutzen die Original-Farbe
         this.fill = fill;
