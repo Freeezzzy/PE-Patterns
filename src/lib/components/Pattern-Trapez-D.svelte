@@ -4,6 +4,29 @@
   import Toggle from '$lib/ui/Toggle.svelte';
   import Slider from '$lib/ui/Slider.svelte';
 
+  // Farbpaletten-Galerie
+  const colorPalettes = [
+    // Monochromes
+    { name: 'Beige Mono', colors: ['#f5f5dc', '#d2b48c', '#daa520'] },
+    { name: 'Teal Mono', colors: ['#008080', '#20b2aa', '#00ced1'] },
+    { name: 'Navy Mono', colors: ['#191970', '#000080', '#4169e1'] },
+    { name: 'Grey Mono', colors: ['#808080', '#a9a9a9', '#696969'] },
+    { name: 'Green Mono', colors: ['#2e8b57', '#3cb371', '#2f4f4f'] },
+    { name: 'Rose Mono', colors: ['#d8a7b1', '#b76e79', '#9a5a68'] },
+    
+    // Harmonische Kombinationen
+    { name: 'Classic', colors: ['#f5f5dc', '#008080', '#191970'] },
+    { name: 'Ocean Sunset', colors: ['#ff6b6b', '#4ecdc4', '#1a535c'] },
+    { name: 'Forest', colors: ['#e0f2e9', '#3cb371', '#2f4f2f'] },
+    { name: 'Autumn', colors: ['#ffd7b5', '#d2691e', '#8b4513'] },
+    { name: 'Lavender', colors: ['#e6d5f0', '#c8a8e0', '#a87dbd'] },
+    { name: 'Mint', colors: ['#e0f8f7', '#80deea', '#4dd0e1'] },
+    { name: 'Coral', colors: ['#ffe5d9', '#ff7e67', '#bc5a45'] },
+    { name: 'Peacock', colors: ['#005f73', '#0a9396', '#94d2bd'] },
+    { name: 'Desert', colors: ['#f4e8c1', '#ca955c', '#a16e47'] },
+    { name: 'Berry', colors: ['#ffd6e8', '#ff85c0', '#c44569'] },
+  ];
+
   // Default-Werte - Pastell Lila Palette
   const DEFAULTS = {
     rows: 4,
@@ -67,6 +90,8 @@
   // UI State
   let selectedColorIndex = 0;
   let colors = [trapezColor, dreieckColor, parallelogrammColor];
+  let selectedPaletteIndex = 10; // Default: Lavender
+  let showPaletteGallery = false; // Toggle für Farbauswahl
 
   function resetAll() {
     trapezColor = DEFAULTS.trapezColor;
@@ -83,7 +108,17 @@
     mirrorRow2 = true;
     mirrorRow3 = true;
     mirrorRow4 = false;
+    selectedPaletteIndex = 10; // Lavender
     colors = [trapezColor, dreieckColor, parallelogrammColor];
+  }
+
+  function togglePaletteGallery() {
+    showPaletteGallery = !showPaletteGallery;
+  }
+
+  // Synchronisiere Farben bei Paletten-Auswahl
+  $: if (selectedPaletteIndex !== -1) {
+    colors = [...colorPalettes[selectedPaletteIndex].colors];
   }
 
   // Synchronisiere Farben zwischen Palette und Pattern
@@ -165,6 +200,33 @@
 
   <h4>Farben</h4>
   <p class="description">Wähle die Farben für Trapez, Dreieck und Parallelogramm.</p>
+  
+  <button onclick={togglePaletteGallery} class="toggle-gallery-btn">
+    {showPaletteGallery ? '▼' : '▶'} Farbauswahl
+  </button>
+  
+  {#if showPaletteGallery}
+    <div class="palette-gallery">
+      {#each colorPalettes as palette, index}
+        <label class="palette-item" class:selected={selectedPaletteIndex === index}>
+          <input 
+            type="radio" 
+            name="palette" 
+            value={index} 
+            bind:group={selectedPaletteIndex}
+            class="palette-radio"
+          />
+          <svg viewBox="0 0 300 100" class="palette-preview">
+            <rect x="0" y="0" width="100" height="100" fill={palette.colors[0]} />
+            <rect x="100" y="0" width="100" height="100" fill={palette.colors[1]} />
+            <rect x="200" y="0" width="100" height="100" fill={palette.colors[2]} />
+          </svg>
+          <span class="palette-name">{palette.name}</span>
+        </label>
+      {/each}
+    </div>
+  {/if}
+  
   <EditableColorPalette bind:colors={colors} bind:selectedColorIndex={selectedColorIndex} />
 
   <hr/>
@@ -177,22 +239,22 @@
 
   <h4>Segment-Abstände</h4>
   <p class="description">Bewege Segmente von der Mitte des Canvas weg.</p>
-  <Slider min={0} max={100} bind:value={segmentSpacingX} label="Horizontal (px)" />
+  <Slider min={0} max={100} bind:value={segmentSpacingX} snapValues={[0, 50, 100]} label="Horizontal (px)" />
   <button onclick={() => segmentSpacingX = DEFAULTS.segmentSpacingX}>Reset</button>
-  <Slider min={0} max={100} bind:value={segmentSpacingY} label="Vertikal (px)" />
+  <Slider min={0} max={100} bind:value={segmentSpacingY} snapValues={[0, 50, 100]} label="Vertikal (px)" />
   <button onclick={() => segmentSpacingY = DEFAULTS.segmentSpacingY}>Reset</button>
 
   <hr/>
 
   <h4>Reihen X-Position</h4>
   <p class="description">Stelle die X-Position jeder Reihe individuell ein.</p>
-  <Slider min={-100} max={100} bind:value={row1OffsetX} label="Reihe 1 Offset-X (px)" />
+  <Slider min={-100} max={100} bind:value={row1OffsetX} snapValues={[-100, -50, 0, 50, 100]} label="Reihe 1 Offset-X (px)" />
   <button onclick={() => row1OffsetX = 0}>Reset</button>
-  <Slider min={-100} max={100} bind:value={row2OffsetX} label="Reihe 2 Offset-X (px)" />
+  <Slider min={-100} max={100} bind:value={row2OffsetX} snapValues={[-100, -50, 0, 50, 100]} label="Reihe 2 Offset-X (px)" />
   <button onclick={() => row2OffsetX = 0}>Reset</button>
-  <Slider min={-100} max={100} bind:value={row3OffsetX} label="Reihe 3 Offset-X (px)" />
+  <Slider min={-100} max={100} bind:value={row3OffsetX} snapValues={[-100, -50, 0, 50, 100]} label="Reihe 3 Offset-X (px)" />
   <button onclick={() => row3OffsetX = 0}>Reset</button>
-  <Slider min={-100} max={100} bind:value={row4OffsetX} label="Reihe 4 Offset-X (px)" />
+  <Slider min={-100} max={100} bind:value={row4OffsetX} snapValues={[-100, -50, 0, 50, 100]} label="Reihe 4 Offset-X (px)" />
   <button onclick={() => row4OffsetX = 0}>Reset</button>
 
   <hr/>
@@ -211,5 +273,84 @@
     font-size: 0.85rem;
     line-height: 1.4;
     margin: 0;
+    margin-bottom: 1rem;
+  }
+
+  .toggle-gallery-btn {
+    margin-bottom: 1rem;
+    padding: 8px 12px;
+    background: #3a3a3a;
+    border: 1px solid #555;
+    color: #ccc;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+    width: 100%;
+    text-align: left;
+    font-weight: 500;
+  }
+
+  .toggle-gallery-btn:hover {
+    background: #444;
+    border-color: #666;
+  }
+
+  .palette-gallery {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 1rem;
+  }
+
+  .palette-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 8px;
+    background: #2d2d2d;
+    border: 2px solid #444;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s;
+    position: relative;
+  }
+
+  .palette-radio {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+    accent-color: #4ecdc4;
+  }
+
+  .palette-item:hover {
+    border-color: #666;
+    background: #333;
+  }
+
+  .palette-item.selected {
+    border-color: #4ecdc4;
+    background: #3a3a3a;
+  }
+
+  .palette-preview {
+    width: 100%;
+    height: 80px;
+    border-radius: 4px;
+    background: #2d2d2d;
+  }
+
+  .palette-name {
+    font-size: 0.7rem;
+    color: #ccc;
+    text-align: center;
+  }
+
+  .palette-item.selected .palette-name {
+    color: #4ecdc4;
+    font-weight: 500;
   }
 </style>
