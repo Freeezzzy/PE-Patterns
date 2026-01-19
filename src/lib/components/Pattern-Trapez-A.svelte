@@ -149,18 +149,21 @@
   
   <div class="palette-gallery">
     {#each colorPalettes as palette, index}
-      <button 
-        class="palette-item" 
-        class:selected={selectedPaletteIndex === index}
-        onclick={() => selectPalette(index)}
-      >
+      <label class="palette-item" class:selected={selectedPaletteIndex === index}>
+        <input 
+          type="radio" 
+          name="palette" 
+          value={index} 
+          bind:group={selectedPaletteIndex}
+          class="palette-radio"
+        />
         <svg viewBox="0 0 300 100" class="palette-preview">
           <rect x="0" y="0" width="100" height="100" fill={palette.colors[0]} />
           <rect x="100" y="0" width="100" height="100" fill={palette.colors[1]} />
           <rect x="200" y="0" width="100" height="100" fill={palette.colors[2]} />
         </svg>
         <span class="palette-name">{palette.name}</span>
-      </button>
+      </label>
     {/each}
   </div>
   
@@ -198,6 +201,17 @@
     border-radius: 8px;
     cursor: pointer;
     transition: all 0.2s;
+    position: relative;
+  }
+
+  .palette-radio {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    cursor: pointer;
+    width: 16px;
+    height: 16px;
+    accent-color: #4ecdc4;
   }
 
   .palette-item:hover {
