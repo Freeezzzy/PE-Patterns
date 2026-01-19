@@ -17,7 +17,8 @@
     parallelogrammColor: '#2f4f2f',
     rowOffsetX: 0,
     rowSpacing: 50,
-    baseStartX: -440
+    baseStartX: -440,
+    useModulo: true
   };
 
   // Feste Parameter
@@ -41,6 +42,7 @@
   let mirrorRow2 = true;  // Default: Row 2 ist gespiegelt
   let mirrorRow3 = true;  // Default: Row 3 ist gespiegelt
   let mirrorRow4 = false;
+  let useModulo = DEFAULTS.useModulo;
 
   // UI State
   let pattern;
@@ -50,10 +52,11 @@
     mirrorRow2 = true;
     mirrorRow3 = true;
     mirrorRow4 = false;
+    useModulo = DEFAULTS.useModulo;
   }
   
   // Berechne Pattern basierend auf Parametern - wird komplett neu generiert wenn Spiegelungen sich ändern
-  $: patternKey = `${mirrorRow1}-${mirrorRow2}-${mirrorRow3}-${mirrorRow4}`;
+  $: patternKey = `${mirrorRow1}-${mirrorRow2}-${mirrorRow3}-${mirrorRow4}-${useModulo}`;
   
   $: allElements = (() => {
     const newPattern = new Pattern(startY, {
@@ -70,7 +73,8 @@
       row1Mirror: mirrorRow1,
       row2Mirror: mirrorRow2,
       row3Mirror: mirrorRow3,
-      row4Mirror: mirrorRow4
+      row4Mirror: mirrorRow4,
+      useModulo
     });
     newPattern.generateGrid(rows, cols);
     return newPattern.getAllElements();
@@ -105,7 +109,7 @@
         {#each allElements as element, i}
           <polygon
             points={element.getPoints()}
-            fill={element.type === 'trapez' ? trapezColor : element.type === 'dreieck' ? dreieckColor : parallelogrammColor}
+            fill={element.fill}
             stroke="black"
             stroke-width="1"
             transform={element.getTransform()}
@@ -121,6 +125,12 @@
     <h4>Pattern C - Reihen-Spiegelung</h4>
     <button onclick={resetAll}>Reset All</button>
   </div>
+
+  <h4>Modulo-Logik</h4>
+  <p class="description">Wechsle zwischen Original- und Negativfarben bei aufeinanderfolgenden Elementen.</p>
+  <Toggle bind:value={useModulo} label="Modulo aktivieren" />
+
+  <hr/>
 
   <h4>Reihen-Spiegelung</h4>
   <p class="description">Spiegele jede Reihe einzeln. Jedes Segment hat 4 Reihen.</p>

@@ -45,7 +45,7 @@
     rowOffsetX: 0,
     rowSpacing: 50,
     baseStartX: -440,
-    useModulo: false
+    useModulo: true
   };
 
   // Feste Parameter
@@ -240,22 +240,16 @@
   <h4>Segment-Abstände</h4>
   <p class="description">Bewege Segmente von der Mitte des Canvas weg.</p>
   <Slider min={0} max={100} bind:value={segmentSpacingX} snapValues={[0, 50, 100]} label="Horizontal (px)" />
-  <button onclick={() => segmentSpacingX = DEFAULTS.segmentSpacingX}>Reset</button>
   <Slider min={0} max={100} bind:value={segmentSpacingY} snapValues={[0, 50, 100]} label="Vertikal (px)" />
-  <button onclick={() => segmentSpacingY = DEFAULTS.segmentSpacingY}>Reset</button>
 
   <hr/>
 
   <h4>Reihen X-Position</h4>
   <p class="description">Stelle die X-Position jeder Reihe individuell ein.</p>
   <Slider min={-100} max={100} bind:value={row1OffsetX} snapValues={[-100, -50, 0, 50, 100]} label="Reihe 1 Offset-X (px)" />
-  <button onclick={() => row1OffsetX = 0}>Reset</button>
   <Slider min={-100} max={100} bind:value={row2OffsetX} snapValues={[-100, -50, 0, 50, 100]} label="Reihe 2 Offset-X (px)" />
-  <button onclick={() => row2OffsetX = 0}>Reset</button>
   <Slider min={-100} max={100} bind:value={row3OffsetX} snapValues={[-100, -50, 0, 50, 100]} label="Reihe 3 Offset-X (px)" />
-  <button onclick={() => row3OffsetX = 0}>Reset</button>
   <Slider min={-100} max={100} bind:value={row4OffsetX} snapValues={[-100, -50, 0, 50, 100]} label="Reihe 4 Offset-X (px)" />
-  <button onclick={() => row4OffsetX = 0}>Reset</button>
 
   <hr/>
 

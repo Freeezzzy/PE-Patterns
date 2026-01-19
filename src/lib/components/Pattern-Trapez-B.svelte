@@ -1,6 +1,7 @@
 <script>
   import { Pattern } from './Pattern.svelte';
   import Slider from '$lib/ui/Slider.svelte';
+  import Toggle from '$lib/ui/Toggle.svelte';
 
   // Default-Werte (feste Geometrie)
   const DEFAULTS = {
@@ -16,7 +17,8 @@
     dreieckColor: '#d2691e',
     parallelogrammColor: '#8b4513',
     rowOffsetX: 0,
-    rowSpacing: 50
+    rowSpacing: 50,
+    useModulo: true
   };
 
   // Feste Parameter (nicht änderbar)
@@ -42,6 +44,9 @@
   let row3OffsetX = 0;
   let row4OffsetX = 0;
   
+  // Modulo
+  let useModulo = DEFAULTS.useModulo;
+  
   // baseStartX - fix
   const viewBoxSize = 1000;
   const baseStartX = 10;
@@ -62,6 +67,7 @@
     row2OffsetX = 0;
     row3OffsetX = 0;
     row4OffsetX = 0;
+    useModulo = DEFAULTS.useModulo;
   }
   
   // Berechne Pattern basierend auf Parametern - komplett neu erstellen bei Änderungen
@@ -80,7 +86,8 @@
       row1OffsetX,
       row2OffsetX,
       row3OffsetX: row3OffsetX + 50,
-      row4OffsetX: row4OffsetX + 50
+      row4OffsetX: row4OffsetX + 50,
+      useModulo
     });
     newPattern.generateGrid(rows, cols);
     pattern = newPattern;
@@ -114,7 +121,7 @@
       {#each allElements as element}
         <polygon
           points={element.getPoints()}
-          fill={element.type === 'trapez' ? trapezColor : element.type === 'dreieck' ? dreieckColor : parallelogrammColor}
+          fill={element.fill}
           stroke="black"
           stroke-width="1"
           transform={element.getTransform()}
@@ -130,25 +137,25 @@
     <button onclick={resetAll}>Reset All</button>
   </div>
 
+  <h4>Modulo-Logik</h4>
+  <p class="description">Wechsle zwischen Original- und Negativfarben bei aufeinanderfolgenden Elementen.</p>
+  <Toggle bind:value={useModulo} label="Modulo aktivieren" />
+
+  <hr/>
+
   <h4>Segment-Abstände</h4>
   <p class="description">Bewege Segmente von der Mitte des Canvas weg (oben/unten, links/rechts).</p>
   <Slider min={0} max={100} bind:value={segmentSpacingX} snapValues={[0, 50, 100]} label="Horizontal (px)" />
-  <button onclick={() => segmentSpacingX = DEFAULTS.segmentSpacingX}>Reset</button>
   <Slider min={0} max={100} bind:value={segmentSpacingY} snapValues={[0, 50, 100]} label="Vertikal (px)" />
-  <button onclick={() => segmentSpacingY = DEFAULTS.segmentSpacingY}>Reset</button>
 
   <hr/>
 
   <h4>Reihen X-Position</h4>
   <p class="description">Stelle die X-Position jeder Reihe individuell ein.</p>
   <Slider min={-100} max={100} bind:value={row1OffsetX} snapValues={[-100, -50, 0, 50, 100]} label="Reihe 1 Offset-X (px)" />
-  <button onclick={() => row1OffsetX = 0}>Reset</button>
   <Slider min={-100} max={100} bind:value={row2OffsetX} snapValues={[-100, -50, 0, 50, 100]} label="Reihe 2 Offset-X (px)" />
-  <button onclick={() => row2OffsetX = 0}>Reset</button>
   <Slider min={-100} max={100} bind:value={row3OffsetX} snapValues={[-100, -50, 0, 50, 100]} label="Reihe 3 Offset-X (px)" />
-  <button onclick={() => row3OffsetX = 0}>Reset</button>
   <Slider min={-100} max={100} bind:value={row4OffsetX} snapValues={[-100, -50, 0, 50, 100]} label="Reihe 4 Offset-X (px)" />
-  <button onclick={() => row4OffsetX = 0}>Reset</button>
 </div>
 
 <style>
