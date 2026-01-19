@@ -100,142 +100,45 @@
   $: centerY = 0;
 </script>
 
-<div style="position: relative; width: 100vw; height: 100vh;">
-  <!-- Controls Panel (absolut positioniert) -->
-  <div class="sidebar">
-    <div class="sidebar-header">
-      <h3>Pattern A - Farbänderungen</h3>
-      <button class="reset-all-btn" on:click={resetAll}>Reset All</button>
-    </div>
-
-    <div class="sidebar-content">
-      <section>
-        <h4>Farbpalette</h4>
-        <p class="description">In diesem Pattern können nur die Farben geändert werden. Die Geometrie ist fest.</p>
-        <EditableColorPalette
-          bind:colors
-          bind:selectedColorIndex
-          width={310}
-          height={310}
-          swatchSize={30}
-        />
-      </section>
-      
-      <section>
-        <h4>Modulo-Logik</h4>
-        <p class="description">Wechsle zwischen Original- und Negativfarben bei aufeinanderfolgenden Elementen.</p>
-        <Toggle bind:value={useModulo} label="Modulo aktivieren" />
-      </section>
-    </div>
-  </div>
-
-  <!-- SVG Canvas -->
-  <div style="width: 100%; height: 100%; display: flex; align-items: flex-start; justify-content: center; overflow: auto; padding-top: 20px; padding-left: 400px;">
-    <svg viewBox="0 0 {viewBoxWidth} {viewBoxHeight}" style="border: 1px solid black; width: 1000px; height: 1000px;">
-      <rect x="0" y="0" width="{viewBoxWidth}" height="{viewBoxHeight}" fill="#2d2d2dff" stroke="none" />
-      
-      {#key patternKey}
-      <g transform="translate({centerX}, {centerY}) scale({scale})">
-        {#each allElements as element}
-          <polygon
-            points={element.getPoints()}
-            fill={element.fill}
-            stroke="black"
-            stroke-width="1"
-            transform={element.getTransform()}
-        />
-      {/each}
-      </g>
-      {/key}
-    </svg>
-  </div>
+<div class="svg-container">
+  <svg viewBox="0 0 {viewBoxWidth} {viewBoxHeight}" class="svg-canvas">
+    <rect x="0" y="0" width="{viewBoxWidth}" height="{viewBoxHeight}" fill="#2d2d2dff" stroke="none" />
+    
+    {#key patternKey}
+    <g transform="translate({centerX}, {centerY}) scale({scale})">
+      {#each allElements as element}
+        <polygon
+          points={element.getPoints()}
+          fill={element.fill}
+          stroke="black"
+          stroke-width="1"
+          transform={element.getTransform()}
+      />
+    {/each}
+    </g>
+    {/key}
+  </svg>
 </div>
 
-<style>
-  .sidebar {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 350px;
-    height: 100%;
-    background: #1a1a1a;
-    border-right: 2px solid #000;
-    display: flex;
-    flex-direction: column;
-    z-index: 100;
-    animation: slideIn 0.3s ease-out;
-  }
+<div class="sidebar-right">
+  <div>
+    <h4>Pattern A - Farbänderungen</h4>
+    <button onclick={resetAll}>Reset All</button>
+  </div>
 
-  @keyframes slideIn {
-    from {
-      transform: translateX(-100%);
-      opacity: 0;
-    }
-    to {
-      transform: translateX(0);
-      opacity: 1;
-    }
-  }
-
-  .sidebar-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 20px;
-    background: #2d2d2d;
-    border-bottom: 2px solid #000;
-  }
-
-  .sidebar-header h3 {
-    margin: 0;
-    font-size: 1.1rem;
-    font-weight: 500;
-    color: #fff;
-  }
-
-  .reset-all-btn {
-    padding: 6px 12px;
-    cursor: pointer;
-    background: #ff6b6b;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-weight: bold;
-    font-size: 0.9rem;
-  }
-
-  .reset-all-btn:hover {
-    background: #ff5252;
-  }
-
-  .sidebar-content {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 25px;
-  }
-
-  section {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-  }
-
-  section h4 {
-    margin: 0;
-    font-size: 0.95rem;
-    font-weight: 500;
-    color: #fff;
-    border-bottom: 1px solid #444;
-    padding-bottom: 8px;
-  }
-
-  .description {
-    color: #aaa;
-    font-size: 0.85rem;
-    line-height: 1.4;
-    margin: 0;
-  }
-</style>
+  <p class="description">In diesem Pattern können nur die Farben geändert werden. Die Geometrie ist fest.</p>
+  
+  <EditableColorPalette
+    bind:colors
+    bind:selectedColorIndex
+    width={310}
+    height={310}
+    swatchSize={30}
+  />
+  
+  <hr/>
+  
+  <h4>Modulo-Logik</h4>
+  <p class="description">Wechsle zwischen Original- und Negativfarben bei aufeinanderfolgenden Elementen.</p>
+  <Toggle bind:value={useModulo} label="Modulo aktivieren" />
+</div>

@@ -18,7 +18,7 @@
 </script>
 
 <div class="svg-container">
-	<svg viewbox="0 0 1000 1000" class="svg-canvas">
+	<svg viewBox="0 0 1000 1000" class="svg-canvas">
 		{#each Array(squareCount) as _, yi}
 			{#each Array(squareCount) as _, xi}
 				{#if (xi + yi) % 2 === 0}
@@ -55,7 +55,9 @@
 	</svg>
 </div>
 
-
+<div class="sidebar-right">
+	<p>Parkett-Muster mit horizontalen und vertikalen Rechtecken im Schachbrettmuster.</p>
+</div>
 
 <!-- Logik-Erklärung des Parkett-Musters:
 Variablen:

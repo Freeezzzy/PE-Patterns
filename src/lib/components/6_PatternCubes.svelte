@@ -59,3 +59,7 @@
 		{/each}
 	</svg>
 </div>
+
+<div class="sidebar-right">
+	<p>3D-Würfel-Muster mit drei verschiedenen Farben.</p>
+</div>

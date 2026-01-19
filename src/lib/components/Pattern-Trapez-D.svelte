@@ -137,206 +137,79 @@
   $: centerY = 0;
 </script>
 
-<div style="position: relative; width: 100vw; height: 100vh;">
-  <!-- Controls Panel (permanent sichtbar) -->
-  <div class="sidebar">
-    <div class="sidebar-header">
-      <h3>Pattern D - Master Pattern</h3>
-      <button class="reset-all-btn" on:click={resetAll}>Reset All</button>
-    </div>
+<div class="svg-container">
+  {#key patternKey}
+  <svg viewBox="0 0 {viewBoxWidth} {viewBoxHeight}" class="svg-canvas">
+    <rect x="0" y="0" width="{viewBoxWidth}" height="{viewBoxHeight}" fill="#2d2d2dff" stroke="none" />
+    
+    <g transform="translate({centerX}, {centerY}) scale({scale})">
+      {#each allElements as element}
+        <polygon
+          points={element.getPoints()}
+          fill={element.fill}
+          stroke="black"
+          stroke-width="1"
+          transform={element.getTransform()}
+      />
+    {/each}
+    </g>
+  </svg>
+  {/key}
+</div>
 
-    <div class="sidebar-content">
-      <section>
-        <h4>Farben</h4>
-        <p class="description">Wähle die Farben für Trapez, Dreieck und Parallelogramm.</p>
-        <EditableColorPalette bind:colors={colors} bind:selectedColorIndex={selectedColorIndex} />
-      </section>
-
-      <section>
-        <h4>Modulo-Effekt</h4>
-        <p class="description">Aktiviere/Deaktiviere die Farb-Invertierung.</p>
-        <Toggle bind:value={useModulo} label="Modulo aktiv" />
-      </section>
-
-      <section>
-        <h4>Segment-Abstände</h4>
-        <p class="description">Bewege Segmente von der Mitte des Canvas weg.</p>
-        <div class="slider-with-reset">
-          <Slider min={0} max={100} bind:value={segmentSpacingX} label="Horizontal (px)" />
-          <button class="reset-btn" on:click={() => segmentSpacingX = DEFAULTS.segmentSpacingX}>↻</button>
-        </div>
-        <div class="slider-with-reset">
-          <Slider min={0} max={100} bind:value={segmentSpacingY} label="Vertikal (px)" />
-          <button class="reset-btn" on:click={() => segmentSpacingY = DEFAULTS.segmentSpacingY}>↻</button>
-        </div>
-      </section>
-
-      <section>
-        <h4>Reihen X-Position</h4>
-        <p class="description">Stelle die X-Position jeder Reihe individuell ein.</p>
-        <div class="slider-with-reset">
-          <Slider min={-100} max={100} bind:value={row1OffsetX} label="Reihe 1 Offset-X (px)" />
-          <button class="reset-btn" on:click={() => row1OffsetX = 0}>↻</button>
-        </div>
-        <div class="slider-with-reset">
-          <Slider min={-100} max={100} bind:value={row2OffsetX} label="Reihe 2 Offset-X (px)" />
-          <button class="reset-btn" on:click={() => row2OffsetX = 0}>↻</button>
-        </div>
-        <div class="slider-with-reset">
-          <Slider min={-100} max={100} bind:value={row3OffsetX} label="Reihe 3 Offset-X (px)" />
-          <button class="reset-btn" on:click={() => row3OffsetX = 0}>↻</button>
-        </div>
-        <div class="slider-with-reset">
-          <Slider min={-100} max={100} bind:value={row4OffsetX} label="Reihe 4 Offset-X (px)" />
-          <button class="reset-btn" on:click={() => row4OffsetX = 0}>↻</button>
-        </div>
-      </section>
-
-      <section>
-        <h4>Reihen-Spiegelung</h4>
-        <p class="description">Spiegle einzelne Reihen horizontal.</p>
-        <Toggle bind:value={mirrorRow1} label="Reihe 1 spiegeln" />
-        <Toggle bind:value={mirrorRow2} label="Reihe 2 spiegeln" />
-        <Toggle bind:value={mirrorRow3} label="Reihe 3 spiegeln" />
-        <Toggle bind:value={mirrorRow4} label="Reihe 4 spiegeln" />
-      </section>
-    </div>
+<div class="sidebar-right">
+  <div>
+    <h4>Pattern D - Master Pattern</h4>
+    <button onclick={resetAll}>Reset All</button>
   </div>
 
-  <!-- SVG Canvas -->
-  <div style="width: 100%; height: 100%; display: flex; align-items: flex-start; justify-content: center; overflow: auto; padding-top: 20px; padding-left: 400px;">
-    {#key patternKey}
-    <svg viewBox="0 0 {viewBoxWidth} {viewBoxHeight}" style="border: 1px solid black; width: 1000px; height: 1000px;">
-      <rect x="0" y="0" width="{viewBoxWidth}" height="{viewBoxHeight}" fill="#2d2d2dff" stroke="none" />
-      
-      <g transform="translate({centerX}, {centerY}) scale({scale})">
-        {#each allElements as element}
-          <polygon
-            points={element.getPoints()}
-            fill={element.fill}
-            stroke="black"
-            stroke-width="1"
-            transform={element.getTransform()}
-        />
-      {/each}
-      </g>
-    </svg>
-    {/key}
-  </div>
+  <h4>Farben</h4>
+  <p class="description">Wähle die Farben für Trapez, Dreieck und Parallelogramm.</p>
+  <EditableColorPalette bind:colors={colors} bind:selectedColorIndex={selectedColorIndex} />
+
+  <hr/>
+
+  <h4>Modulo-Effekt</h4>
+  <p class="description">Aktiviere/Deaktiviere die Farb-Invertierung.</p>
+  <Toggle bind:value={useModulo} label="Modulo aktiv" />
+
+  <hr/>
+
+  <h4>Segment-Abstände</h4>
+  <p class="description">Bewege Segmente von der Mitte des Canvas weg.</p>
+  <Slider min={0} max={100} bind:value={segmentSpacingX} label="Horizontal (px)" />
+  <button onclick={() => segmentSpacingX = DEFAULTS.segmentSpacingX}>Reset</button>
+  <Slider min={0} max={100} bind:value={segmentSpacingY} label="Vertikal (px)" />
+  <button onclick={() => segmentSpacingY = DEFAULTS.segmentSpacingY}>Reset</button>
+
+  <hr/>
+
+  <h4>Reihen X-Position</h4>
+  <p class="description">Stelle die X-Position jeder Reihe individuell ein.</p>
+  <Slider min={-100} max={100} bind:value={row1OffsetX} label="Reihe 1 Offset-X (px)" />
+  <button onclick={() => row1OffsetX = 0}>Reset</button>
+  <Slider min={-100} max={100} bind:value={row2OffsetX} label="Reihe 2 Offset-X (px)" />
+  <button onclick={() => row2OffsetX = 0}>Reset</button>
+  <Slider min={-100} max={100} bind:value={row3OffsetX} label="Reihe 3 Offset-X (px)" />
+  <button onclick={() => row3OffsetX = 0}>Reset</button>
+  <Slider min={-100} max={100} bind:value={row4OffsetX} label="Reihe 4 Offset-X (px)" />
+  <button onclick={() => row4OffsetX = 0}>Reset</button>
+
+  <hr/>
+
+  <h4>Reihen-Spiegelung</h4>
+  <p class="description">Spiegle einzelne Reihen horizontal.</p>
+  <Toggle bind:value={mirrorRow1} label="Reihe 1 spiegeln" />
+  <Toggle bind:value={mirrorRow2} label="Reihe 2 spiegeln" />
+  <Toggle bind:value={mirrorRow3} label="Reihe 3 spiegeln" />
+  <Toggle bind:value={mirrorRow4} label="Reihe 4 spiegeln" />
 </div>
 
 <style>
-  .sidebar {
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 350px;
-    height: 100%;
-    background: #1a1a1a;
-    border-right: 2px solid #000;
-    display: flex;
-    flex-direction: column;
-    z-index: 100;
-  }
-
-  .sidebar-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 15px 20px;
-    background: #2d2d2d;
-    border-bottom: 2px solid #000;
-  }
-
-  .sidebar-header h3 {
-    margin: 0;
-    font-size: 1.1rem;
-    font-weight: 500;
-    color: #fff;
-  }
-
-  .reset-all-btn {
-    padding: 6px 12px;
-    cursor: pointer;
-    background: #ff6b6b;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    font-weight: bold;
-    font-size: 0.9rem;
-  }
-
-  .reset-all-btn:hover {
-    background: #ff5252;
-  }
-
-  .sidebar-content {
-    flex: 1;
-    overflow-y: auto;
-    padding: 20px;
-    display: flex;
-    flex-direction: column;
-    gap: 25px;
-  }
-
-  section {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-  }
-
-  section h4 {
-    margin: 0;
-    font-size: 0.95rem;
-    font-weight: 500;
-    color: #fff;
-    border-bottom: 1px solid #444;
-    padding-bottom: 8px;
-  }
-
-  .description {
+  .sidebar-right .description {
     color: #aaa;
     font-size: 0.85rem;
     line-height: 1.4;
     margin: 0;
-  }
-
-  .slider-with-reset {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    width: 100%;
-  }
-
-  .slider-with-reset :global(.slider-container) {
-    flex: 1;
-    min-width: 0;
-    max-width: calc(100% - 40px);
-  }
-
-  .reset-btn {
-    padding: 6px 10px;
-    cursor: pointer;
-    background: #444;
-    color: white;
-    border: 1px solid #666;
-    border-radius: 4px;
-    font-size: 1rem;
-    font-weight: bold;
-    min-width: 32px;
-    height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s;
-  }
-
-  .reset-btn:hover {
-    background: #555;
-    border-color: #777;
-  }
-
-  .reset-btn:active {
-    transform: scale(0.95);
   }
 </style>

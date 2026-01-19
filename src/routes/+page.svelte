@@ -1,5 +1,6 @@
 <script>
 	import Header from '$lib/components/Header.svelte';
+	import { slide } from 'svelte/transition';
 	import PatternRect from '$lib/components/1_PatternRect.svelte';	
 	import PatternrectStruct from '$lib/components/2_PatternrectStruct.svelte';	
 	import PatternPolygon from '$lib/components/4_PatternPolygon.svelte';
@@ -9,101 +10,70 @@
 	import PatternTrapezC from '$lib/components/Pattern-Trapez-C.svelte';
 	import PatternTrapezD from '$lib/components/Pattern-Trapez-D.svelte';
 
-	// Load pattern from localStorage or default to 'MusterEins'
-	let selectedPattern = $state(
-		typeof window !== 'undefined' 
-			? (localStorage.getItem('selectedPattern') || 'MusterEins')
-			: 'MusterEins'
-	);
-
-	const patterns = [
-		{ id: 'PatternRect', name: 'Pattern Rect' },
-		{ id: 'PatternrectStruct', name: 'Pattern Rect Struct (Parquet)' },
-		{ id: 'PatternPolygon', name: 'Pattern Kacheln' },
-		{ id: 'PatternCubes', name: 'Pattern Cubes' },
-		{ id: 'PatternTrapezA', name: 'Pattern Trapez A - Nur Farben' },
-		{ id: 'PatternTrapezB', name: 'Pattern Trapez B - Positionen & Abstände' },
-		{ id: 'PatternTrapezC', name: 'Pattern Trapez C - Reihen-Spiegelung' },
-		{ id: 'PatternTrapezD', name: 'Pattern Trapez D - Master Pattern' },
+	let patterns = [
+		{
+			name: 'Pattern Rect',
+			component: PatternRect,
+			description: 'Ein einfaches rechteckiges Muster.'
+		},
+		{
+			name: 'Pattern Rect Struct (Parquet)',
+			component: PatternrectStruct,
+			description: 'Ein Parkett-Muster mit strukturierten Rechtecken.'
+		},
+		{
+			name: 'Pattern Kacheln',
+			component: PatternPolygon,
+			description: 'Ein Muster mit Polygon-Kacheln.'
+		},
+		{
+			name: 'Pattern Cubes',
+			component: PatternCubes,
+			description: 'Ein 3D-Würfel-Muster.'
+		},
+		{
+			name: 'Pattern Trapez A - Nur Farben',
+			component: PatternTrapezA,
+			description: 'Trapez-Muster mit Farbsteuerung.'
+		},
+		{
+			name: 'Pattern Trapez B - Positionen & Abstände',
+			component: PatternTrapezB,
+			description: 'Trapez-Muster mit Position und Abstand-Steuerung.'
+		},
+		{
+			name: 'Pattern Trapez C - Reihen-Spiegelung',
+			component: PatternTrapezC,
+			description: 'Trapez-Muster mit Reihen-Spiegelung.'
+		},
+		{
+			name: 'Pattern Trapez D - Master Pattern',
+			component: PatternTrapezD,
+			description: 'Vollständiges Trapez-Muster mit allen Funktionen.'
+		},
 	];
 
-	$effect(() => {
-		console.log('Selected pattern:', selectedPattern);
-		// Save to localStorage whenever it changes
-		if (typeof window !== 'undefined') {
-			localStorage.setItem('selectedPattern', selectedPattern);
-		}
-	});
+	let selectedPattern = $state(0);
+	let SelectedPattern = $derived(patterns[selectedPattern].component);
 </script>
 
 <div class="app-container">
 	<Header />
-	
-	<div class="pattern-selector">
-		<label for="pattern-select">Muster auswählen:</label>
-		<select id="pattern-select" bind:value={selectedPattern}>
-			{#each patterns as pattern}
-				<option value={pattern.id}>{pattern.name}</option>
-			{/each}
-		</select>
-	</div>
-
 	<main class="app-main">
-		{#if selectedPattern === 'PatternRect'}
-			<PatternRect />
-		{:else if selectedPattern === 'PatternrectStruct'}
-			<PatternrectStruct />
-		{:else if selectedPattern === 'PatternPolygon'}
-			<PatternPolygon />
-		{:else if selectedPattern === 'PatternCubes'}
-			<PatternCubes />
-		{:else if selectedPattern === 'PatternTrapezA'}
-			<PatternTrapezA />
-		{:else if selectedPattern === 'PatternTrapezB'}
-			<PatternTrapezB />
-		{:else if selectedPattern === 'PatternTrapezC'}
-			<PatternTrapezC />
-		{:else if selectedPattern === 'PatternTrapezD'}
-			<PatternTrapezD />
-		{/if}
+		<div class="sidebar-left">
+			{#each patterns as pattern, index}
+				<button
+					class="sidebar-left-item"
+					class:selected={selectedPattern === index}
+					onclick={() => (selectedPattern = index)}
+					>{pattern.name}
+					{#if selectedPattern === index}
+						<div transition:slide class="sidebar-left-description">{pattern.description}</div>
+					{/if}
+				</button>
+			{/each}
+		</div>
+
+		<SelectedPattern />
 	</main>
 </div>
-
-<style>
-	.pattern-selector {
-		padding: 20px;
-		background: #f0f0f0;
-		border-radius: 8px;
-		margin: 20px;
-		display: flex;
-		align-items: center;
-		gap: 15px;
-		max-width: 800px;
-	}
-
-	.pattern-selector label {
-		font-size: 16px;
-		font-weight: 600;
-		color: #333;
-	}
-
-	.pattern-selector select {
-		padding: 10px 15px;
-		font-size: 14px;
-		border: 2px solid #ccc;
-		border-radius: 4px;
-		background: white;
-		cursor: pointer;
-		min-width: 250px;
-		transition: border-color 0.2s;
-	}
-
-	.pattern-selector select:hover {
-		border-color: #999;
-	}
-
-	.pattern-selector select:focus {
-		outline: none;
-		border-color: #007bff;
-	}
-</style>

@@ -12,7 +12,7 @@
 </script>
 
 <div class="svg-container">
-	<svg viewbox="0 0 1000 1000" class="svg-canvas">
+	<svg viewBox="0 0 1000 1000" class="svg-canvas">
 		{#each Array(squareCount) as _, yi}
 			{#each Array(squareCount) as _, xi}
 				<rect
@@ -24,4 +24,8 @@
 			{/each}
 		{/each}
 	</svg>
+</div>
+
+<div class="sidebar-right">
+	<p>Einfaches Schachbrettmuster ohne Steuerelemente.</p>
 </div>

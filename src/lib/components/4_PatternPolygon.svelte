@@ -1,4 +1,6 @@
 <script>
+	import Slider from '$lib/ui/Slider.svelte';
+	
 	const squareCount = 20;
 	const squareSize = 1000 / squareCount;
 
@@ -13,25 +15,6 @@
 		offset = 0;
 	}
 </script>
-
-<div id="controls">
-	<div id="size">
-		<label for="length-input">Größe: {length}</label>
-		<div class="slider-container">
-			<input id="length-input" type="range" min="0" max="100" bind:value={length} />
-			<button onclick={resetLength}>Reset</button>
-		</div>
-	</div>
-
-	<div id="control">
-		<label for="offset-input">Offset: {offset}</label>
-		<div class="slider-container">
-			<input id="offset-input" type="range" min="0" max="100" bind:value={offset} />
-			<button onclick={resetOffset}>Reset</button>
-		</div>
-	</div>
-</div>
-
 
 <div class="svg-container">
 	<svg viewBox="0 0 1000 1000" class="svg-canvas" shape-rendering="crispEdges">
@@ -55,41 +38,12 @@
 	</svg>
 </div>
 
-<style>
-	#controls {
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		justify-content: center;
-		gap: 10px;
-		margin-bottom: 20px;
-	}
-
-	#control, #size {
-		display: flex;
-		flex-direction: column;
-		width: 200px;
-		align-items: center;
-		justify-content: center;
-	}
-
-	.slider-container {
-		display: flex;
-		gap: 10px;
-		width: 100%;
-		align-items: center;
-	}
-
-	label {
-		text-align: center;
-	}
-
-	input {
-		flex: 1;
-	}
-
-	button {
-		padding: 4px 8px;
-		cursor: pointer;
-	}
-</style>
+<div class="sidebar-right">
+	<Slider min={0} max={100} bind:value={length} label="Größe" />
+	<button onclick={resetLength}>Reset Größe</button>
+	
+	<hr/>
+	
+	<Slider min={0} max={100} bind:value={offset} label="Offset" />
+	<button onclick={resetOffset}>Reset Offset</button>
+</div>
