@@ -15,24 +15,14 @@
 
 	let patterns = [
 		{
-			name: 'Pattern Rect',
-			component: PatternRect,
-			description: 'Ein einfaches rechteckiges Muster.'
+			name: 'StripeRow Pattern (4x4 Grid)',
+			component: PatternStripeRowD,
+			description: 'StripeRow-Muster: 16 Segmente (4x4) mit je 4 Reihen, alle Features.'
 		},
 		{
-			name: 'Pattern Rect Struct (Parquet)',
-			component: PatternrectStruct,
-			description: 'Ein Parkett-Muster mit strukturierten Rechtecken.'
-		},
-		{
-			name: 'Pattern Kacheln',
-			component: PatternPolygon,
-			description: 'Ein Muster mit Polygon-Kacheln.'
-		},
-		{
-			name: 'Pattern Cubes',
-			component: PatternCubes,
-			description: 'Ein 3D-Würfel-Muster.'
+			name: 'CustomRow Pattern',
+			component: PatternCustomRowD,
+			description: 'Trapez-Parallelogramm-Trapez Muster mit 4 Reihen.'
 		},
 		{
 			name: 'Pattern Trapez A - Nur Farben',
@@ -53,22 +43,9 @@
 			name: 'Pattern Trapez D - Master Pattern',
 			component: PatternTrapezD,
 			description: 'Vollständiges Trapez-Muster mit allen Funktionen.'
-		},
-		{
-			name: 'Reihen-Variante-1',
-			component: PatternTrapezGrid,
-			description: 'VV1 Pattern: Trapez-Dreieck-Wechsel ohne Rotation, 4x4 Grid.'
-		},
-		{
-			name: 'StripeRow Pattern (4x4 Grid)',
-			component: PatternStripeRowD,
-			description: 'StripeRow-Muster: 16 Segmente (4x4) mit je 4 Reihen, alle Features.'
-		},
-		{
-			name: 'CustomRow Pattern',
-			component: PatternCustomRowD,
-			description: 'Trapez-Parallelogramm-Trapez Muster mit 4 Reihen.'
 		}
+		
+
 	];
 
 	let selectedPattern = $state(0);
