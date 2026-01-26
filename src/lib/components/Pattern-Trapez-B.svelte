@@ -132,25 +132,20 @@
 </div>
 
 <div class="sidebar-right">
-  <div>
-    <h4>Pattern B - Positionen & Abstände</h4>
-    <button onclick={resetAll}>Reset All</button>
-  </div>
+  <button onclick={resetAll}>Reset All</button>
 
-  <h4>Modulo-Logik</h4>
+  <hr/>
   <p class="description">Wechsle zwischen Original- und Negativfarben bei aufeinanderfolgenden Elementen.</p>
   <Toggle bind:value={useModulo} label="Modulo aktivieren" />
 
   <hr/>
 
-  <h4>Segment-Abstände</h4>
   <p class="description">Bewege Segmente von der Mitte des Canvas weg (oben/unten, links/rechts).</p>
   <Slider min={0} max={100} bind:value={segmentSpacingX} snapValues={[0, 50, 100]} label="Horizontal (px)" />
   <Slider min={0} max={100} bind:value={segmentSpacingY} snapValues={[0, 50, 100]} label="Vertikal (px)" />
 
   <hr/>
 
-  <h4>Reihen X-Position</h4>
   <p class="description">Stelle die X-Position jeder Reihe individuell ein.</p>
   <Slider min={-100} max={100} bind:value={row1OffsetX} snapValues={[-100, -50, 0, 50, 100]} label="Reihe 1 Offset-X (px)" />
   <Slider min={-100} max={100} bind:value={row2OffsetX} snapValues={[-100, -50, 0, 50, 100]} label="Reihe 2 Offset-X (px)" />

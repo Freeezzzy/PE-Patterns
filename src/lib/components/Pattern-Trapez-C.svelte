@@ -121,18 +121,14 @@
 </div>
 
 <div class="sidebar-right">
-  <div>
-    <h4>Pattern C - Reihen-Spiegelung</h4>
-    <button onclick={resetAll}>Reset All</button>
-  </div>
+  <button onclick={resetAll}>Reset All</button>
 
-  <h4>Modulo-Logik</h4>
+  <hr/>
   <p class="description">Wechsle zwischen Original- und Negativfarben bei aufeinanderfolgenden Elementen.</p>
   <Toggle bind:value={useModulo} label="Modulo aktivieren" />
 
   <hr/>
 
-  <h4>Reihen-Spiegelung</h4>
   <p class="description">Spiegele jede Reihe einzeln. Jedes Segment hat 4 Reihen.</p>
   <Toggle bind:value={mirrorRow1} label="Reihe 1 spiegeln" />
   <Toggle bind:value={mirrorRow2} label="Reihe 2 spiegeln" />

@@ -193,12 +193,9 @@
 </div>
 
 <div class="sidebar-right">
-  <div>
-    <h4>Pattern D - Master Pattern</h4>
-    <button onclick={resetAll}>Reset All</button>
-  </div>
+  <button onclick={resetAll}>Reset All</button>
 
-  <h4>Farben</h4>
+  <hr/>
   <p class="description">Wähle die Farben für Trapez, Dreieck und Parallelogramm.</p>
   
   <button onclick={togglePaletteGallery} class="toggle-gallery-btn">
@@ -231,20 +228,17 @@
 
   <hr/>
 
-  <h4>Modulo-Effekt</h4>
   <p class="description">Aktiviere/Deaktiviere die Farb-Invertierung.</p>
   <Toggle bind:value={useModulo} label="Modulo aktiv" />
 
   <hr/>
 
-  <h4>Segment-Abstände</h4>
   <p class="description">Bewege Segmente von der Mitte des Canvas weg.</p>
   <Slider min={0} max={100} bind:value={segmentSpacingX} snapValues={[0, 50, 100]} label="Horizontal (px)" />
   <Slider min={0} max={100} bind:value={segmentSpacingY} snapValues={[0, 50, 100]} label="Vertikal (px)" />
 
   <hr/>
 
-  <h4>Reihen X-Position</h4>
   <p class="description">Stelle die X-Position jeder Reihe individuell ein.</p>
   <Slider min={-100} max={100} bind:value={row1OffsetX} snapValues={[-100, -50, 0, 50, 100]} label="Reihe 1 Offset-X (px)" />
   <Slider min={-100} max={100} bind:value={row2OffsetX} snapValues={[-100, -50, 0, 50, 100]} label="Reihe 2 Offset-X (px)" />
@@ -253,7 +247,6 @@
 
   <hr/>
 
-  <h4>Reihen-Spiegelung</h4>
   <p class="description">Spiegle einzelne Reihen horizontal.</p>
   <Toggle bind:value={mirrorRow1} label="Reihe 1 spiegeln" />
   <Toggle bind:value={mirrorRow2} label="Reihe 2 spiegeln" />

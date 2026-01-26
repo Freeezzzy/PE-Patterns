@@ -9,6 +9,9 @@
 	import PatternTrapezB from '$lib/components/Pattern-Trapez-B.svelte';
 	import PatternTrapezC from '$lib/components/Pattern-Trapez-C.svelte';
 	import PatternTrapezD from '$lib/components/Pattern-Trapez-D.svelte';
+	import PatternTrapezGrid from '$lib/components/Pattern-Trapez-Grid.svelte';
+	import PatternStripeRowD from '$lib/components/Pattern-StripeRow-D.svelte';
+	import PatternCustomRowD from '$lib/components/Pattern-CustomRow-D.svelte';
 
 	let patterns = [
 		{
@@ -51,6 +54,21 @@
 			component: PatternTrapezD,
 			description: 'Vollständiges Trapez-Muster mit allen Funktionen.'
 		},
+		{
+			name: 'Reihen-Variante-1',
+			component: PatternTrapezGrid,
+			description: 'VV1 Pattern: Trapez-Dreieck-Wechsel ohne Rotation, 4x4 Grid.'
+		},
+		{
+			name: 'StripeRow Pattern (4x4 Grid)',
+			component: PatternStripeRowD,
+			description: 'StripeRow-Muster: 16 Segmente (4x4) mit je 4 Reihen, alle Features.'
+		},
+		{
+			name: 'CustomRow Pattern',
+			component: PatternCustomRowD,
+			description: 'Trapez-Parallelogramm-Trapez Muster mit 4 Reihen.'
+		}
 	];
 
 	let selectedPattern = $state(0);

@@ -140,10 +140,7 @@
 </div>
 
 <div class="sidebar-right">
-  <div>
-    <h4>Pattern A - Farbänderungen</h4>
-    <button onclick={resetAll}>Reset All</button>
-  </div>
+  <button onclick={resetAll}>Reset All</button>
 
   <p class="description">Wähle eine Farbpalette aus der Galerie.</p>
   
@@ -169,7 +166,6 @@
   
   <hr/>
   
-  <h4>Modulo-Logik</h4>
   <p class="description">Wechsle zwischen Original- und Negativfarben bei aufeinanderfolgenden Elementen.</p>
   <Toggle bind:value={useModulo} label="Modulo aktivieren" />
 </div>
