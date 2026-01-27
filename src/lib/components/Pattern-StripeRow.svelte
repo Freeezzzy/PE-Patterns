@@ -16,9 +16,9 @@
     rowSpacing: 0,
     baseStartX: -250,
     countPerRow: 7,
-    hueRange: [280, 300],
-    saturationRange: [100, 100],
-    luminanceRange: [60, 80]
+    hueRange: [30, 25],
+    saturationRange: [100, 76],
+    luminanceRange: [85, 31]
   };
 
   // Feste Parameter

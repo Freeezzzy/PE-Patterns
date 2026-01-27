@@ -1,7 +1,7 @@
 <script context="module">
-	import { CustomSegment } from './CustomSegment.svelte';
+	import { ZiczacSegment } from './ZiczacSegment.svelte';
 
-	export class CustomPattern {
+	export class ZiczacPattern {
 		colorIndices;
 		startY;
 		segmentWidth;

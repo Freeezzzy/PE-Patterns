@@ -6,25 +6,12 @@
 
   // Farbpaletten-Galerie
   const colorPalettes = [
-    // Monochromes
-    { name: 'Beige Mono', colors: ['#f5f5dc', '#d2b48c', '#daa520'] },
-    { name: 'Teal Mono', colors: ['#008080', '#20b2aa', '#00ced1'] },
-    { name: 'Navy Mono', colors: ['#191970', '#000080', '#4169e1'] },
-    { name: 'Grey Mono', colors: ['#808080', '#a9a9a9', '#696969'] },
-    { name: 'Green Mono', colors: ['#2e8b57', '#3cb371', '#2f4f4f'] },
-    { name: 'Rose Mono', colors: ['#d8a7b1', '#b76e79', '#9a5a68'] },
+   
     
     // Harmonische Kombinationen
-    { name: 'Classic', colors: ['#f5f5dc', '#008080', '#191970'] },
-    { name: 'Ocean Sunset', colors: ['#ff6b6b', '#4ecdc4', '#1a535c'] },
-    { name: 'Forest', colors: ['#e0f2e9', '#3cb371', '#2f4f2f'] },
+   
     { name: 'Autumn', colors: ['#ffd7b5', '#d2691e', '#8b4513'] },
-    { name: 'Lavender', colors: ['#e6d5f0', '#c8a8e0', '#a87dbd'] },
-    { name: 'Mint', colors: ['#e0f8f7', '#80deea', '#4dd0e1'] },
-    { name: 'Coral', colors: ['#ffe5d9', '#ff7e67', '#bc5a45'] },
-    { name: 'Peacock', colors: ['#005f73', '#0a9396', '#94d2bd'] },
-    { name: 'Desert', colors: ['#f4e8c1', '#ca955c', '#a16e47'] },
-    { name: 'Berry', colors: ['#ffd6e8', '#ff85c0', '#c44569'] },
+
   ];
 
   // Default-Werte - Pastell Lila Palette
@@ -39,9 +26,9 @@
     segmentSpacingX: 0,
     segmentSpacingY: 0,
     scale: 1,
-    trapezColor: '#e6d5f0',
-    dreieckColor: '#c8a8e0',
-    parallelogrammColor: '#a87dbd',
+    trapezColor: '#ffd7b5',
+    dreieckColor: '#d2691e',
+    parallelogrammColor: '#8b4513',
     rowOffsetX: 0,
     rowSpacing: 50,
     baseStartX: -440,
@@ -90,7 +77,7 @@
   // UI State
   let selectedColorIndex = 0;
   let colors = [trapezColor, dreieckColor, parallelogrammColor];
-  let selectedPaletteIndex = 10; // Default: Lavender
+  let selectedPaletteIndex = 0; // Default: Autumn
   let showPaletteGallery = false; // Toggle für Farbauswahl
 
   function resetAll() {
@@ -108,7 +95,7 @@
     mirrorRow2 = true;
     mirrorRow3 = true;
     mirrorRow4 = false;
-    selectedPaletteIndex = 10; // Lavender
+    selectedPaletteIndex = 0; // Autumn
     colors = [trapezColor, dreieckColor, parallelogrammColor];
   }
 

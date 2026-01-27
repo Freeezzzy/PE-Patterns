@@ -1,28 +1,12 @@
 <script>
   import { Pattern } from './Pattern.svelte';
   import Toggle from '$lib/ui/Toggle.svelte';
+  import RangeSlider from '$lib/ui/RangeSlider.svelte';
 
   // Farbpaletten-Galerie
   const colorPalettes = [
-    // Monochromes
-    { name: 'Beige Mono', colors: ['#f5f5dc', '#d2b48c', '#daa520'] },
-    { name: 'Teal Mono', colors: ['#008080', '#20b2aa', '#00ced1'] },
-    { name: 'Navy Mono', colors: ['#191970', '#000080', '#4169e1'] },
-    { name: 'Grey Mono', colors: ['#808080', '#a9a9a9', '#696969'] },
-    { name: 'Green Mono', colors: ['#2e8b57', '#3cb371', '#2f4f4f'] },
-    { name: 'Rose Mono', colors: ['#d8a7b1', '#b76e79', '#9a5a68'] },
-    
-    // Harmonische Kombinationen
-    { name: 'Classic', colors: ['#f5f5dc', '#008080', '#191970'] },
-    { name: 'Ocean Sunset', colors: ['#ff6b6b', '#4ecdc4', '#1a535c'] },
-    { name: 'Forest', colors: ['#e0f2e9', '#3cb371', '#2f4f2f'] },
     { name: 'Autumn', colors: ['#ffd7b5', '#d2691e', '#8b4513'] },
-    { name: 'Lavender', colors: ['#e6d5f0', '#c8a8e0', '#a87dbd'] },
-    { name: 'Mint', colors: ['#e0f8f7', '#80deea', '#4dd0e1'] },
-    { name: 'Coral', colors: ['#ffe5d9', '#ff7e67', '#bc5a45'] },
-    { name: 'Peacock', colors: ['#005f73', '#0a9396', '#94d2bd'] },
-    { name: 'Desert', colors: ['#f4e8c1', '#ca955c', '#a16e47'] },
-    { name: 'Berry', colors: ['#ffd6e8', '#ff85c0', '#c44569'] },
+    { name: 'Earth Tones', colors: ['#d4c5b9', '#8b7355', '#5c4a3a'] },
   ];
 
   // Default-Werte
@@ -60,24 +44,97 @@
   // Modulo-Option
   let useModulo = $state(DEFAULTS.useModulo);
 
-  let selectedPaletteIndex = $state(6); // Default: Classic
+  // Farbmodus: 'palette' oder 'slider'
+  let colorMode = $state('palette');
 
-  // Derive colors from selected palette
-  let trapezColor = $derived(colorPalettes[selectedPaletteIndex].colors[0]);
-  let dreieckColor = $derived(colorPalettes[selectedPaletteIndex].colors[1]);
-  let parallelogrammColor = $derived(colorPalettes[selectedPaletteIndex].colors[2]);
+  let selectedPaletteIndex = $state(0); // Default: Autumn
+
+  // RangeSlider Parameter für HSL-Farben
+  let hueMin = $state(30);
+  let hueMax = $state(15);
+  let satMin = $state(70);
+  let satMax = $state(60);
+  let lumMin = $state(70);
+  let lumMax = $state(40);
+
+  // Hilfsfunktion für HSL zu Hex Konvertierung
+  function hslToHex(h, s, l) {
+    h = h / 360;
+    s = s / 100;
+    l = l / 100;
+
+    let r, g, b;
+    if (s === 0) {
+      r = g = b = l;
+    } else {
+      const hue2rgb = (p, q, t) => {
+        if (t < 0) t += 1;
+        if (t > 1) t -= 1;
+        if (t < 1/6) return p + (q - p) * 6 * t;
+        if (t < 1/2) return q;
+        if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+        return p;
+      };
+      const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+      const p = 2 * l - q;
+      r = hue2rgb(p, q, h + 1/3);
+      g = hue2rgb(p, q, h);
+      b = hue2rgb(p, q, h - 1/3);
+    }
+
+    const toHex = x => {
+      const hex = Math.round(x * 255).toString(16);
+      return hex.length === 1 ? '0' + hex : hex;
+    };
+
+    return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+  }
+
+  // Derive colors based on colorMode
+  let trapezColor = $derived.by(() => {
+    if (colorMode === 'slider') {
+      return hslToHex(hueMin, satMin, lumMin);
+    }
+    return colorPalettes[selectedPaletteIndex].colors[0];
+  });
+  
+  let dreieckColor = $derived.by(() => {
+    if (colorMode === 'slider') {
+      return hslToHex(hueMax, satMax, lumMax);
+    }
+    return colorPalettes[selectedPaletteIndex].colors[1];
+  });
+  
+  let parallelogrammColor = $derived.by(() => {
+    if (colorMode === 'slider') {
+      return hslToHex((hueMin + hueMax) / 2, (satMin + satMax) / 2, (lumMin + lumMax) / 2);
+    }
+    return colorPalettes[selectedPaletteIndex].colors[2];
+  });
 
   function resetAll() {
-    selectedPaletteIndex = 6; // Classic
+    selectedPaletteIndex = 0; // Autumn
     useModulo = DEFAULTS.useModulo;
-  }
-  
-  function selectPalette(index) {
-    selectedPaletteIndex = index;
+    colorMode = 'palette';
+    hueMin = 30;
+    hueMax = 15;
+    satMin = 70;
+    satMax = 60;
+    lumMin = 70;
+    lumMax = 40;
   }
   
   // PatternKey für Re-Rendering bei Änderungen
-  let patternKey = $derived(`${useModulo}-${selectedPaletteIndex}`);
+  let patternKey = $derived(`${useModulo}-${selectedPaletteIndex}-${colorMode}-${hueMin}-${hueMax}`);
+  
+  function selectPalette(index) {
+    selectedPaletteIndex = index;
+    colorMode = 'palette';
+  }
+  
+  function activateSliders() {
+    colorMode = 'slider';
+  }
   
   // Berechne Pattern basierend auf Parametern - komplett neu erstellen bei Änderungen
   let allElements = $derived.by(() => {
@@ -142,6 +199,27 @@
 <div class="sidebar-right">
   <button onclick={resetAll}>Reset All</button>
 
+  <hr/>
+
+  <p class="description">Wähle einen Farbmodus:</p>
+  <div class="mode-selector">
+    <button 
+      class:active={colorMode === 'palette'} 
+      onclick={() => colorMode = 'palette'}
+    >
+      Paletten
+    </button>
+    <button 
+      class:active={colorMode === 'slider'} 
+      onclick={activateSliders}
+    >
+      Slider
+    </button>
+  </div>
+
+  <hr/>
+
+  {#if colorMode === 'palette'}
   <p class="description">Wähle eine Farbpalette aus der Galerie.</p>
   
   <div class="palette-gallery">
@@ -164,6 +242,33 @@
     {/each}
   </div>
   
+  {/if}
+
+  {#if colorMode === 'slider'}
+  <p class="description">Stelle die Farben mit den Slidern ein.</p>
+  <RangeSlider 
+    min={0} 
+    max={360} 
+    bind:value1={hueMin}
+    bind:value2={hueMax}
+    label="Hue (Trapez → Dreieck)" 
+  />
+  <RangeSlider 
+    min={0} 
+    max={100} 
+    bind:value1={satMin}
+    bind:value2={satMax}
+    label="Saturation (Trapez → Dreieck)" 
+  />
+  <RangeSlider 
+    min={0} 
+    max={100} 
+    bind:value1={lumMin}
+    bind:value2={lumMax}
+    label="Luminance (Trapez → Dreieck)" 
+  />
+  {/if}
+
   <hr/>
   
   <p class="description">Wechsle zwischen Original- und Negativfarben bei aufeinanderfolgenden Elementen.</p>
@@ -234,6 +339,36 @@
   }
 
   .palette-item.selected .palette-name {
+    color: #4ecdc4;
+    font-weight: 500;
+  }
+
+  .mode-selector {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 1rem;
+  }
+
+  .mode-selector button {
+    flex: 1;
+    padding: 8px 16px;
+    background: #2d2d2d;
+    border: 2px solid #444;
+    border-radius: 6px;
+    color: #ccc;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 0.9rem;
+  }
+
+  .mode-selector button:hover {
+    border-color: #666;
+    background: #333;
+  }
+
+  .mode-selector button.active {
+    border-color: #4ecdc4;
+    background: #3a3a3a;
     color: #4ecdc4;
     font-weight: 500;
   }

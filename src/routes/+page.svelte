@@ -10,18 +10,18 @@
 	import PatternTrapezC from '$lib/components/Pattern-Trapez-C.svelte';
 	import PatternTrapezD from '$lib/components/Pattern-Trapez-D.svelte';
 	import PatternTrapezGrid from '$lib/components/Pattern-Trapez-Grid.svelte';
-	import PatternStripeRowD from '$lib/components/Pattern-StripeRow-D.svelte';
-	import PatternCustomRowD from '$lib/components/Pattern-CustomRow-D.svelte';
+	import PatternStripeRow from '$lib/components/Pattern-StripeRow.svelte';
+	import PatternZiczacRow from '$lib/components/Pattern-ZiczacRow.svelte';
 
 	let patterns = [
 		{
-			name: 'StripeRow Pattern (4x4 Grid)',
-			component: PatternStripeRowD,
+			name: 'Stripe-Row Pattern',
+			component: PatternStripeRow,
 			description: 'StripeRow-Muster: 16 Segmente (4x4) mit je 4 Reihen, alle Features.'
 		},
 		{
-			name: 'CustomRow Pattern',
-			component: PatternCustomRowD,
+			name: 'Ziczac-Row Pattern',
+			component: PatternZiczacRow,
 			description: 'Trapez-Parallelogramm-Trapez Muster mit 4 Reihen.'
 		},
 		{

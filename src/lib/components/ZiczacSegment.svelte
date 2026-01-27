@@ -1,7 +1,7 @@
 <script context="module">
-	import { CustomRow } from './CustomRow.svelte';
+	import { ZiczacRow } from './ZiczacRow.svelte';
 
-	export class CustomSegment {
+	export class ZiczacSegment {
 		offsetX;
 		colorIndices;
 		mirrorRow1;

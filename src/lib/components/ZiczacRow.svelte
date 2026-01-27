@@ -5,7 +5,7 @@
 	const l = 50;
 	const h = Math.sin(Math.PI / 3) * l;
 
-	export class CustomRow {
+	export class ZiczacRow {
 		/**
 		 * Custom Pattern Row - Trapez-Paar → Parallelogramm-Paar → Trapez-Paar (2x wiederholt)
 		 */

@@ -1,5 +1,5 @@
 <script>
-	import { CustomPattern } from './CustomPattern.svelte';
+	import { ZiczacPattern } from './ZiczacPattern.svelte';
 	import RangeSlider from '$lib/ui/RangeSlider.svelte';
 
 
@@ -21,9 +21,9 @@
 		mirrorRow2: false,
 		mirrorRow3: false,
 		mirrorRow4: false,
-		hueRange: [280, 300],
-		opacityRange: [100, 100],
-		luminanceRange: [60, 80]
+		hueRange: [30, 25],
+		opacityRange: [100, 76],
+		luminanceRange: [85, 31]
 	};
 
 	// Feste Parameter
@@ -35,9 +35,6 @@
 	const baseStartX = DEFAULTS.baseStartX;
 	const countPerRow = DEFAULTS.countPerRow;
 
-	// Änderbare Parameter - Farben (nur 2)
-	let colorIndices = $state(['#e6d5f0', '#c8a8e0']);
-	
 	// Änderbare Parameter - Row-Offsets (Verzahnung) - fixe Werte
 	const offsetRow1 = DEFAULTS.offsetRow1;
 	const offsetRow2 = DEFAULTS.offsetRow2;
@@ -62,7 +59,6 @@
 	let useModulo = $state(DEFAULTS.useModulo);
 
 	function resetAll() {
-		colorIndices = ['#e6d5f0', '#c8a8e0'];
 		hueMin = DEFAULTS.hueRange[0];
 		hueMax = DEFAULTS.hueRange[1];
 		satMin = DEFAULTS.opacityRange[0];
@@ -151,7 +147,7 @@
 	});
 
 	let pattern = $derived(
-		new CustomPattern(
+		new ZiczacPattern(
 			expandedColors,
 			startY,
 			segmentWidth,
