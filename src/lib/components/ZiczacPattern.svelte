@@ -67,7 +67,7 @@
 					const startX = this.baseStartX + col * this.segmentWidth;
 					const startY = this.startY + row * this.segmentHeight;
 
-					const segment = new CustomSegment(
+				const segment = new ZiczacSegment(
 						startX,
 						this.colorIndices,
 						this.mirrorRow1,

@@ -60,7 +60,7 @@
 			];
 
 			this.rows = rows.map(({ mirror, offset, index }) => {
-				return new CustomRow(
+				return new ZiczacRow(
 					this.offsetX + offset,
 					h * 2 * index,
 					mirror,

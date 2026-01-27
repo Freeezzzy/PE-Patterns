@@ -23,7 +23,8 @@
 		mirrorRow4: false,
 		hueRange: [30, 25],
 		opacityRange: [100, 76],
-		luminanceRange: [85, 31]
+		luminanceRange: [85, 31],
+		useModulo: false
 	};
 
 	// Feste Parameter
