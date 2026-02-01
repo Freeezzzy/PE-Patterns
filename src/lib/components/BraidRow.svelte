@@ -76,16 +76,17 @@
 				);
 
 				// Trapez-Paar 2 (180°) - Position 75, 100
+				// Bei 180°: Index anpassen damit visuell oberes Trapez dunkel ist
 				this.elements.push(
 					new Trapez(
 						blockX + (this.mirror ? -75 : 75),
 						this.yTop,
 						180,
-						getColor(i * 12 + 2),
+						getColor(i * 12 + 3),
 						null,
 						null,
 						null,
-						i * 12 + 2,
+						i * 12 + 3,
 						this.useModulo
 					)
 				);
@@ -94,11 +95,11 @@
 						blockX + (this.mirror ? -100 : 100),
 						this.yTop - this.h,
 						180,
-						getColor(i * 12 + 3),
+						getColor(i * 12 + 2),
 						null,
 						null,
 						null,
-						i * 12 + 3,
+						i * 12 + 2,
 						this.useModulo
 					)
 				);
@@ -137,11 +138,11 @@
 						blockX + (this.mirror ? -225 : 225),
 						this.yTop,
 						180,
-						getColor(i * 12 + 6),
+						getColor(i * 12 + 7),
 						null,
 						null,
 						null,
-						i * 12 + 6,
+						i * 12 + 7,
 						this.useModulo
 					)
 				);
@@ -150,11 +151,11 @@
 						blockX + (this.mirror ? -250 : 250),
 						this.yTop - this.h,
 						180,
-						getColor(i * 12 + 7),
+						getColor(i * 12 + 6),
 						null,
 						null,
 						null,
-						i * 12 + 7,
+						i * 12 + 6,
 						this.useModulo
 					)
 				);
@@ -193,11 +194,11 @@
 						blockX + (this.mirror ? -375 : 375),
 						this.yTop,
 						180,
-						getColor(i * 12 + 10),
+						getColor(i * 12 + 11),
 						null,
 						null,
 						null,
-						i * 12 + 10,
+						i * 12 + 11,
 						this.useModulo
 					)
 				);
@@ -206,11 +207,11 @@
 						blockX + (this.mirror ? -400 : 400),
 						this.yTop - this.h,
 						180,
-						getColor(i * 12 + 11),
+						getColor(i * 12 + 10),
 						null,
 						null,
 						null,
-						i * 12 + 11,
+						i * 12 + 10,
 						this.useModulo
 					)
 				);

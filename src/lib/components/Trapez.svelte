@@ -38,13 +38,15 @@
       
       // Neue Modulo-Logik: Berücksichtigt die Rotation
       // rotation: 0 = oberes Trapez, rotation: 180 = unteres Trapez
+      // Immer soll das visuell obere Trapez die dunklere Farbe (Original) haben
       if (elementIndex !== null && elementIndex !== undefined && useModulo) {
-        // Wenn rotation = 180 (unteres Trapez), invertiere die Modulo-Logik
-        const shouldInvert = (rotation === 180) 
-          ? (elementIndex % 2 === 1)  // Ungerade = Original für untere Trapeze
-          : (elementIndex % 2 === 0); // Gerade = Original für obere Trapeze
+        // Bei rotation = 0: gerade Indices (0, 2, 4...) sind oben → Original (dunkel)
+        // Bei rotation = 180: ungerade Indices (1, 3, 5...) sind visuell oben → Original (dunkel)
+        const shouldUseOriginal = (rotation === 180) 
+          ? (elementIndex % 2 === 1)  // Ungerade = Original für gedrehte Trapeze
+          : (elementIndex % 2 === 0); // Gerade = Original für normale Trapeze
         
-        this.fill = shouldInvert ? fill : invertColor(fill);
+        this.fill = shouldUseOriginal ? fill : invertColor(fill);
       } else if (elementIndex !== null && elementIndex !== undefined && !useModulo) {
         // Modulo deaktiviert: Alle nutzen die Original-Farbe
         this.fill = fill;
