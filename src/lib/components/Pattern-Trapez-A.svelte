@@ -5,8 +5,8 @@
 
   // Farbpaletten-Galerie
   const colorPalettes = [
-    { name: 'Autumn', colors: ['#ffd7b5', '#d2691e', '#8b4513'] },
-    { name: 'Earth Tones', colors: ['#d4c5b9', '#8b7355', '#5c4a3a'] },
+    { name: 'Light', colors: ['#ffd7b5', '#d2691e', '#8b4513'] },
+    { name: 'Dark', colors: ['#8b4513', '#d2691e', '#ffd7b5'] },
   ];
 
   // Default-Werte
@@ -51,11 +51,11 @@
 
   // RangeSlider Parameter für HSL-Farben
   let hueMin = $state(25);
-  let hueMax = $state(30);
+  let hueMax = $state(25);
   let satMin = $state(100);
-  let satMax = $state(76);
+  let satMax = $state(75);
   let lumMin = $state(85);
-  let lumMax = $state(31);
+  let lumMax = $state(47);
 
   // Hilfsfunktion für HSL zu Hex Konvertierung
   function hslToHex(h, s, l) {
@@ -117,11 +117,11 @@
     useModulo = DEFAULTS.useModulo;
     colorMode = 'palette';
     hueMin = 25;
-    hueMax = 30;
+    hueMax = 25;
     satMin = 100;
-    satMax = 76;
+    satMax = 75;
     lumMin = 85;
-    lumMax = 31;
+    lumMax = 47;
   }
   
   // PatternKey für Re-Rendering bei Änderungen

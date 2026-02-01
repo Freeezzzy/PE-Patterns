@@ -1,17 +1,13 @@
 <script>
   import { Pattern } from './Pattern.svelte';
-  import EditableColorPalette from '$lib/ui/EditableColorPalette.svelte';
   import Toggle from '$lib/ui/Toggle.svelte';
   import Slider from '$lib/ui/Slider.svelte';
+  import RangeSlider from '$lib/ui/RangeSlider.svelte';
 
   // Farbpaletten-Galerie
   const colorPalettes = [
-   
-    
-    // Harmonische Kombinationen
-   
-    { name: 'Autumn', colors: ['#ffd7b5', '#d2691e', '#8b4513'] },
-
+    { name: 'Light', colors: ['#ffd7b5', '#d2691e', '#8b4513'] },
+    { name: 'Dark', colors: ['#8b4513', '#d2691e', '#ffd7b5'] },
   ];
 
   // Default-Werte - Pastell Lila Palette
@@ -48,43 +44,105 @@
   const rowSpacing = DEFAULTS.rowSpacing;
   const baseStartX = DEFAULTS.baseStartX;
 
-  // Änderbare Parameter - Farben
-  let trapezColor = DEFAULTS.trapezColor;
-  let dreieckColor = DEFAULTS.dreieckColor;
-  let parallelogrammColor = DEFAULTS.parallelogrammColor;
+  // Modulo-Option
+  let useModulo = $state(DEFAULTS.useModulo);
+
+  // Farbmodus: 'palette' oder 'slider'
+  let colorMode = $state('palette');
+
+  let selectedPaletteIndex = $state(0); // Default: Light
+
+  // RangeSlider Parameter für HSL-Farben
+  let hueMin = $state(25);
+  let hueMax = $state(25);
+  let satMin = $state(100);
+  let satMax = $state(75);
+  let lumMin = $state(85);
+  let lumMax = $state(47);
+
+  // Hilfsfunktion für HSL zu Hex Konvertierung
+  function hslToHex(h, s, l) {
+    h = h / 360;
+    s = s / 100;
+    l = l / 100;
+
+    let r, g, b;
+    if (s === 0) {
+      r = g = b = l;
+    } else {
+      const hue2rgb = (p, q, t) => {
+        if (t < 0) t += 1;
+        if (t > 1) t -= 1;
+        if (t < 1/6) return p + (q - p) * 6 * t;
+        if (t < 1/2) return q;
+        if (t < 2/3) return p + (q - p) * (2/3 - t) * 6;
+        return p;
+      };
+      const q = l < 0.5 ? l * (1 + s) : l + s - l * s;
+      const p = 2 * l - q;
+      r = hue2rgb(p, q, h + 1/3);
+      g = hue2rgb(p, q, h);
+      b = hue2rgb(p, q, h - 1/3);
+    }
+
+    const toHex = x => {
+      const hex = Math.round(x * 255).toString(16);
+      return hex.length === 1 ? '0' + hex : hex;
+    };
+
+    return `#${toHex(r)}${toHex(g)}${toHex(b)}`;
+  }
+
+  // Derive colors based on colorMode
+  let trapezColor = $derived.by(() => {
+    if (colorMode === 'slider') {
+      return hslToHex(hueMin, satMin, lumMin);
+    }
+    return colorPalettes[selectedPaletteIndex].colors[0];
+  });
   
-  // Änderbare Parameter - Modulo
-  let useModulo = DEFAULTS.useModulo;
+  let dreieckColor = $derived.by(() => {
+    if (colorMode === 'slider') {
+      return hslToHex(hueMax, satMax, lumMax);
+    }
+    return colorPalettes[selectedPaletteIndex].colors[1];
+  });
+  
+  let parallelogrammColor = $derived.by(() => {
+    if (colorMode === 'slider') {
+      return hslToHex((hueMin + hueMax) / 2, (satMin + satMax) / 2, (lumMin + lumMax) / 2);
+    }
+    return colorPalettes[selectedPaletteIndex].colors[2];
+  });
 
   // Änderbare Parameter - Segment-Abstände
-  let segmentSpacingX = DEFAULTS.segmentSpacingX;
-  let segmentSpacingY = DEFAULTS.segmentSpacingY;
+  let segmentSpacingX = $state(DEFAULTS.segmentSpacingX);
+  let segmentSpacingY = $state(DEFAULTS.segmentSpacingY);
 
   // Änderbare Parameter - Row-Offsets
-  let row1OffsetX = 0;
-  let row2OffsetX = 0;
-  let row3OffsetX = 0;
-  let row4OffsetX = 0;
+  let row1OffsetX = $state(0);
+  let row2OffsetX = $state(0);
+  let row3OffsetX = $state(0);
+  let row4OffsetX = $state(0);
 
   // Änderbare Parameter - Row-Spiegelung
-  let mirrorRow1 = false;
-  let mirrorRow2 = true;
-  let mirrorRow3 = true;
-  let mirrorRow4 = false;
+  let mirrorRow1 = $state(false);
+  let mirrorRow2 = $state(true);
+  let mirrorRow3 = $state(true);
+  let mirrorRow4 = $state(false);
 
   let pattern;
 
-  // UI State
-  let selectedColorIndex = 0;
-  let colors = [trapezColor, dreieckColor, parallelogrammColor];
-  let selectedPaletteIndex = 0; // Default: Autumn
-  let showPaletteGallery = false; // Toggle für Farbauswahl
-
   function resetAll() {
-    trapezColor = DEFAULTS.trapezColor;
-    dreieckColor = DEFAULTS.dreieckColor;
-    parallelogrammColor = DEFAULTS.parallelogrammColor;
+    selectedPaletteIndex = 0;
     useModulo = DEFAULTS.useModulo;
+    colorMode = 'palette';
+    hueMin = 25;
+    hueMax = 25;
+    satMin = 100;
+    satMax = 75;
+    lumMin = 85;
+    lumMax = 47;
     segmentSpacingX = DEFAULTS.segmentSpacingX;
     segmentSpacingY = DEFAULTS.segmentSpacingY;
     row1OffsetX = 0;
@@ -95,31 +153,17 @@
     mirrorRow2 = true;
     mirrorRow3 = true;
     mirrorRow4 = false;
-    selectedPaletteIndex = 0; // Autumn
-    colors = [trapezColor, dreieckColor, parallelogrammColor];
   }
 
-  function togglePaletteGallery() {
-    showPaletteGallery = !showPaletteGallery;
-  }
-
-  // Synchronisiere Farben bei Paletten-Auswahl
-  $: if (selectedPaletteIndex !== -1) {
-    colors = [...colorPalettes[selectedPaletteIndex].colors];
-  }
-
-  // Synchronisiere Farben zwischen Palette und Pattern
-  $: {
-    trapezColor = colors[0];
-    dreieckColor = colors[1];
-    parallelogrammColor = colors[2];
+  function activateSliders() {
+    colorMode = 'slider';
   }
 
   // Pattern-Key für vollständige Re-Rendering
-  $: patternKey = `${useModulo}-${colors.join('-')}-${mirrorRow1}-${mirrorRow2}-${mirrorRow3}-${mirrorRow4}-${segmentSpacingX}-${segmentSpacingY}-${row1OffsetX}-${row2OffsetX}-${row3OffsetX}-${row4OffsetX}`;
+  let patternKey = $derived(`${useModulo}-${colorMode}-${selectedPaletteIndex}-${hueMin}-${hueMax}-${satMin}-${satMax}-${lumMin}-${lumMax}-${mirrorRow1}-${mirrorRow2}-${mirrorRow3}-${mirrorRow4}-${segmentSpacingX}-${segmentSpacingY}-${row1OffsetX}-${row2OffsetX}-${row3OffsetX}-${row4OffsetX}`);
 
   // Berechne Pattern
-  $: allElements = (() => {
+  let allElements = $derived.by(() => {
     const newPattern = new Pattern(startY, {
       segmentWidth,
       segmentHeight,
@@ -146,17 +190,17 @@
     newPattern.generateGrid(rows, cols);
     pattern = newPattern;
     return newPattern.getAllElements();
-  })();
+  });
   
   // Berechne viewBox
   const h = Math.sin(Math.PI / 3) * 50;
-  $: viewBoxSize = 1000;
-  $: viewBoxWidth = viewBoxSize;
-  $: viewBoxHeight = viewBoxSize;
+  let viewBoxSize = $derived(1000);
+  let viewBoxWidth = $derived(viewBoxSize);
+  let viewBoxHeight = $derived(viewBoxSize);
   
   // Kein zusätzliches Zentrieren
-  $: centerX = 0;
-  $: centerY = 0;
+  let centerX = $derived(0);
+  let centerY = $derived(0);
 </script>
 
 <div class="svg-container">
@@ -183,38 +227,77 @@
   <button onclick={resetAll}>Reset All</button>
 
   <hr/>
-  <p class="description">Wähle die Farben für Trapez, Dreieck und Parallelogramm.</p>
-  
-  <button onclick={togglePaletteGallery} class="toggle-gallery-btn">
-    {showPaletteGallery ? '▼' : '▶'} Farbauswahl
-  </button>
-  
-  {#if showPaletteGallery}
-    <div class="palette-gallery">
-      {#each colorPalettes as palette, index}
-        <label class="palette-item" class:selected={selectedPaletteIndex === index}>
-          <input 
-            type="radio" 
-            name="palette" 
-            value={index} 
-            bind:group={selectedPaletteIndex}
-            class="palette-radio"
-          />
-          <svg viewBox="0 0 300 100" class="palette-preview">
-            <rect x="0" y="0" width="100" height="100" fill={palette.colors[0]} />
-            <rect x="100" y="0" width="100" height="100" fill={palette.colors[1]} />
-            <rect x="200" y="0" width="100" height="100" fill={palette.colors[2]} />
-          </svg>
-          <span class="palette-name">{palette.name}</span>
-        </label>
-      {/each}
-    </div>
-  {/if}
-  
-  <EditableColorPalette bind:colors={colors} bind:selectedColorIndex={selectedColorIndex} />
+
+  <p class="description">Wähle einen Farbmodus:</p>
+  <div class="mode-selector">
+    <button 
+      class:active={colorMode === 'palette'} 
+      onclick={() => colorMode = 'palette'}
+    >
+      Paletten
+    </button>
+    <button 
+      class:active={colorMode === 'slider'} 
+      onclick={activateSliders}
+    >
+      Slider
+    </button>
+  </div>
 
   <hr/>
 
+  {#if colorMode === 'palette'}
+  <p class="description">Wähle eine Farbpalette aus der Galerie.</p>
+  
+  <div class="palette-gallery">
+    {#each colorPalettes as palette, index}
+      <label class="palette-item" class:selected={selectedPaletteIndex === index}>
+        <input 
+          type="radio" 
+          name="palette" 
+          value={index} 
+          bind:group={selectedPaletteIndex}
+          class="palette-radio"
+        />
+        <svg viewBox="0 0 300 100" class="palette-preview">
+          <rect x="0" y="0" width="100" height="100" fill={palette.colors[0]} />
+          <rect x="100" y="0" width="100" height="100" fill={palette.colors[1]} />
+          <rect x="200" y="0" width="100" height="100" fill={palette.colors[2]} />
+        </svg>
+        <span class="palette-name">{palette.name}</span>
+      </label>
+    {/each}
+  </div>
+  
+  {/if}
+
+  {#if colorMode === 'slider'}
+  <p class="description">Stelle die Farben mit den Slidern ein.</p>
+  <RangeSlider 
+    min={0} 
+    max={360} 
+    bind:value1={hueMin}
+    bind:value2={hueMax}
+    label="Hue (Trapez → Dreieck)" 
+  />
+  <RangeSlider 
+    min={0} 
+    max={100} 
+    bind:value1={satMin}
+    bind:value2={satMax}
+    label="Saturation (Trapez → Dreieck)" 
+  />
+  <RangeSlider 
+    min={0} 
+    max={100} 
+    bind:value1={lumMin}
+    bind:value2={lumMax}
+    label="Luminance (Trapez → Dreieck)" 
+  />
+  {/if}
+
+  <hr/>
+  
   <p class="description">Aktiviere/Deaktiviere die Farb-Invertierung.</p>
   <Toggle bind:value={useModulo} label="Modulo aktiv" />
 
@@ -248,25 +331,6 @@
     line-height: 1.4;
     margin: 0;
     margin-bottom: 1rem;
-  }
-
-  .toggle-gallery-btn {
-    margin-bottom: 1rem;
-    padding: 8px 12px;
-    background: #3a3a3a;
-    border: 1px solid #555;
-    color: #ccc;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: all 0.2s;
-    width: 100%;
-    text-align: left;
-    font-weight: 500;
-  }
-
-  .toggle-gallery-btn:hover {
-    background: #444;
-    border-color: #666;
   }
 
   .palette-gallery {
@@ -324,6 +388,36 @@
   }
 
   .palette-item.selected .palette-name {
+    color: #4ecdc4;
+    font-weight: 500;
+  }
+
+  .mode-selector {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 1rem;
+  }
+
+  .mode-selector button {
+    flex: 1;
+    padding: 8px 16px;
+    background: #2d2d2d;
+    border: 2px solid #444;
+    border-radius: 6px;
+    color: #ccc;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 0.9rem;
+  }
+
+  .mode-selector button:hover {
+    border-color: #666;
+    background: #333;
+  }
+
+  .mode-selector button.active {
+    border-color: #4ecdc4;
+    background: #3a3a3a;
     color: #4ecdc4;
     font-weight: 500;
   }
