@@ -5,11 +5,11 @@
 	// Default-Werte
 	const DEFAULTS = {
 		rows: 4,
-		cols: 4,
+		cols: 2,
 		startY: -149,
-		segmentWidth: 400,
+		segmentWidth: 1350, // 3 Blöcke à 450px (Trapeze von -50 bis +450)
 		segmentHeight: 346,
-		baseStartX: -440,
+		baseStartX: -590,
 		countPerRow: 3,
 		offsetRow1: 0,
 		offsetRow2: -50,

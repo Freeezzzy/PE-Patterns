@@ -25,7 +25,7 @@
 			this.count = count;
 			this.useModulo = useModulo;
 			this.h = h;
-			this.blockWidth = 600; // 6 Trapez-Paare à 50px = 300px, mit Abständen
+		this.blockWidth = 450; // Trapeze von Pos 0 bis 400: von -50 bis +450 = 450px
 			this.elements = [];
 			this.generateElements();
 		}
@@ -45,7 +45,7 @@
 				};
 
 				// 6 Trapez-Paare: abwechselnd normal (0°) und gedreht (180°)
-				// Innerhalb Paar: Abstand 25px, zwischen Paaren: nahtlos
+				// Innerhalb Paar: Abstand 25px für Überlappung, zwischen Paaren: 50px
 				
 				// Trapez-Paar 1 (0°) - Position 0, 25
 				this.elements.push(
