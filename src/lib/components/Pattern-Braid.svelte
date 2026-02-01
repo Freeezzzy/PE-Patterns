@@ -19,7 +19,7 @@
 		mirrorRow2: false,
 		mirrorRow3: false,
 		mirrorRow4: false,
-		hueRange: [30, 25],
+		hueRange: [25, 30],
 		opacityRange: [100, 76],
 		luminanceRange: [85, 31],
 		useModulo: false

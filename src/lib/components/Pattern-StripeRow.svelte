@@ -16,7 +16,7 @@
     rowSpacing: 0,
     baseStartX: -250,
     countPerRow: 7,
-    hueRange: [30, 25],
+    hueRange: [25, 30],
     saturationRange: [100, 76],
     luminanceRange: [85, 31]
   };

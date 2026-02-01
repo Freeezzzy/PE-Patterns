@@ -50,12 +50,12 @@
   let selectedPaletteIndex = $state(0); // Default: Autumn
 
   // RangeSlider Parameter für HSL-Farben
-  let hueMin = $state(30);
-  let hueMax = $state(15);
-  let satMin = $state(70);
-  let satMax = $state(60);
-  let lumMin = $state(70);
-  let lumMax = $state(40);
+  let hueMin = $state(25);
+  let hueMax = $state(30);
+  let satMin = $state(100);
+  let satMax = $state(76);
+  let lumMin = $state(85);
+  let lumMax = $state(31);
 
   // Hilfsfunktion für HSL zu Hex Konvertierung
   function hslToHex(h, s, l) {
@@ -116,12 +116,12 @@
     selectedPaletteIndex = 0; // Autumn
     useModulo = DEFAULTS.useModulo;
     colorMode = 'palette';
-    hueMin = 30;
-    hueMax = 15;
-    satMin = 70;
-    satMax = 60;
-    lumMin = 70;
-    lumMax = 40;
+    hueMin = 25;
+    hueMax = 30;
+    satMin = 100;
+    satMax = 76;
+    lumMin = 85;
+    lumMax = 31;
   }
   
   // PatternKey für Re-Rendering bei Änderungen
