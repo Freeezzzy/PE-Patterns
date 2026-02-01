@@ -12,6 +12,7 @@
 	import PatternTrapezGrid from '$lib/components/Pattern-Trapez-Grid.svelte';
 	import PatternStripeRow from '$lib/components/Pattern-StripeRow.svelte';
 	import PatternZiczacRow from '$lib/components/Pattern-ZiczacRow.svelte';
+	import PatternBraid from '$lib/components/Pattern-Braid.svelte';
 
 	let patterns = [
 		{
@@ -23,6 +24,11 @@
 			name: 'Ziczac-Row Pattern',
 			component: PatternZiczacRow,
 			description: 'Trapez-Parallelogramm-Trapez Muster mit 4 Reihen.'
+		},
+		{
+			name: 'Braid Pattern',
+			component: PatternBraid,
+			description: 'Geflochtenes Muster mit wechselnder Spiegelung.'
 		},
 		{
 			name: 'Pattern Trapez A - Nur Farben',
