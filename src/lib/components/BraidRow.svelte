@@ -45,11 +45,12 @@
 				};
 
 				// 6 Trapez-Paare: abwechselnd normal (0°) und gedreht (180°)
+				// Innerhalb Paar: Abstand 25px, zwischen Paaren: nahtlos
 				
-				// Trapez-Paar 1 (0°) - Position 40, 65
+				// Trapez-Paar 1 (0°) - Position 0, 25
 				this.elements.push(
 					new Trapez(
-						blockX + (this.mirror ? -40 : 40),
+						blockX + (this.mirror ? 0 : 0),
 						this.yTop,
 						0,
 						getColor(i * 12),
@@ -62,7 +63,7 @@
 				);
 				this.elements.push(
 					new Trapez(
-						blockX + (this.mirror ? -65 : 65),
+						blockX + (this.mirror ? -25 : 25),
 						this.yTop - this.h,
 						0,
 						getColor(i * 12 + 1),
@@ -74,10 +75,10 @@
 					)
 				);
 
-				// Trapez-Paar 2 (180°) - Position 115, 140
+				// Trapez-Paar 2 (180°) - Position 75, 100
 				this.elements.push(
 					new Trapez(
-						blockX + (this.mirror ? -115 : 115),
+						blockX + (this.mirror ? -75 : 75),
 						this.yTop,
 						180,
 						getColor(i * 12 + 2),
@@ -90,7 +91,7 @@
 				);
 				this.elements.push(
 					new Trapez(
-						blockX + (this.mirror ? -140 : 140),
+						blockX + (this.mirror ? -100 : 100),
 						this.yTop - this.h,
 						180,
 						getColor(i * 12 + 3),
@@ -102,10 +103,10 @@
 					)
 				);
 
-				// Trapez-Paar 3 (0°) - Position 190, 215
+				// Trapez-Paar 3 (0°) - Position 150, 175
 				this.elements.push(
 					new Trapez(
-						blockX + (this.mirror ? -190 : 190),
+						blockX + (this.mirror ? -150 : 150),
 						this.yTop,
 						0,
 						getColor(i * 12 + 4),
@@ -118,7 +119,7 @@
 				);
 				this.elements.push(
 					new Trapez(
-						blockX + (this.mirror ? -215 : 215),
+						blockX + (this.mirror ? -175 : 175),
 						this.yTop - this.h,
 						0,
 						getColor(i * 12 + 5),
@@ -130,10 +131,10 @@
 					)
 				);
 
-				// Trapez-Paar 4 (180°) - Position 265, 290
+				// Trapez-Paar 4 (180°) - Position 225, 250
 				this.elements.push(
 					new Trapez(
-						blockX + (this.mirror ? -265 : 265),
+						blockX + (this.mirror ? -225 : 225),
 						this.yTop,
 						180,
 						getColor(i * 12 + 6),
@@ -146,7 +147,7 @@
 				);
 				this.elements.push(
 					new Trapez(
-						blockX + (this.mirror ? -290 : 290),
+						blockX + (this.mirror ? -250 : 250),
 						this.yTop - this.h,
 						180,
 						getColor(i * 12 + 7),
@@ -158,10 +159,10 @@
 					)
 				);
 
-				// Trapez-Paar 5 (0°) - Position 340, 365
+				// Trapez-Paar 5 (0°) - Position 300, 325
 				this.elements.push(
 					new Trapez(
-						blockX + (this.mirror ? -340 : 340),
+						blockX + (this.mirror ? -300 : 300),
 						this.yTop,
 						0,
 						getColor(i * 12 + 8),
@@ -174,7 +175,7 @@
 				);
 				this.elements.push(
 					new Trapez(
-						blockX + (this.mirror ? -365 : 365),
+						blockX + (this.mirror ? -325 : 325),
 						this.yTop - this.h,
 						0,
 						getColor(i * 12 + 9),
@@ -186,10 +187,10 @@
 					)
 				);
 
-				// Trapez-Paar 6 (180°) - Position 415, 440
+				// Trapez-Paar 6 (180°) - Position 375, 400
 				this.elements.push(
 					new Trapez(
-						blockX + (this.mirror ? -415 : 415),
+						blockX + (this.mirror ? -375 : 375),
 						this.yTop,
 						180,
 						getColor(i * 12 + 10),
@@ -202,7 +203,7 @@
 				);
 				this.elements.push(
 					new Trapez(
-						blockX + (this.mirror ? -440 : 440),
+						blockX + (this.mirror ? -400 : 400),
 						this.yTop - this.h,
 						180,
 						getColor(i * 12 + 11),
